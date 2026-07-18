@@ -28,7 +28,7 @@
   {{ end }}
 
   <div id="filter-container">
-    <label for="book-filter">فلتر الملامزم :</label>
+    <label for="book-filter">فلتر الملازم :</label>
     <select id="book-filter" onchange="filterBooks(this.value)">
       <option value="all">جميع الملازم</option>
       {{ range (uniq $tags) }}
