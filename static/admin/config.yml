@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: sadiqAlAboudi/tamayuz.online
+  branch: main
+  auth_methods:
+    - token
+
+media_folder: "static/images"
+public_folder: "/images"
+
+media_libraries:
+  all:
+    max_file_size: 5120000
+    slugify_filename: true
+    transformations:
+      raster_image:
+        format: webp
+        quality: 85
+      svg:
+        optimize: true
+
+site_url: https://tamayuz.online
+display_url: https://tamayuz.online
+
+
+collections:
+  - name: "home"
+    label: "الصفحة الرئيسية"
+    files:
+      - label: "تعديل محتوى الصفحة"
+        name: "index"
+        file: "content/_index.md"
+        fields:
+          - { label: "العنوان", name: "title", widget: "string" }
+          - { label: "الوصف", name: "description", widget: "string" }
+          - label: "قسم الهيرو"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "العنوان الرئيسي", name: "heading", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+              - { label: "الصورة", name: "image", widget: "image" }
+          - label: "الخدمات"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "العنوان", name: "title", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+          - label: "آراء العملاء"
+            name: "testimonials"
+            widget: "list"
+            fields:
+              - { label: "الاسم", name: "name", widget: "string" }
+              - { label: "الرأي", name: "opinion", widget: "text" }
+          - label: "معلومات الاتصال"
+            name: "contact"
+            widget: "object"
+            fields:
+              - { label: "الهاتف", name: "phone", widget: "string" }
+              - { label: "العنوان", name: "address", widget: "string" }
+              - { label: "تيليجرام", name: "telegram", widget: "string" }
+              - { label: "انستغرام", name: "instagram", widget: "string" }
+              - { label: "فيسبوك", name: "facebook", widget: "string" }
+              - { label: "واتساب", name: "whatsapp", widget: "string" }
+
+  - name: "books"
+    label: "الملازم"
+    folder: "content/books"
+    create: true
+    slug: "{{uuid_shorter}}"
+    fields:
+      - { label: "العنوان", name: "title", widget: "string" }
+      - { label: "التصنيف", name: "tag", widget: "string" }
+      - label: "الصور"
+        name: "images"
+        widget: "list"
+        field: { label: "صورة", name: "image", widget: "image" }
