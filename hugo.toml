@@ -1,6 +1,3 @@
 baseURL = 'https://tamayuz.online/'
 locale = 'ar'
 title = 'Tamayuz'
-
-# hugo.toml
-disableKinds = ["taxonomy", "term", "section", "page"]
