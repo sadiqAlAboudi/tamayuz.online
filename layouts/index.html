@@ -1,0 +1,181 @@
+{{ define "main" }}
+<section id="hero">
+  <h1>{{ .Params.hero.heading }}</h1>
+  <p>{{ .Params.hero.description }}</p>
+  <a href="#services">اكتشف خدماتنا</a>
+  <img src="{{ .Params.hero.image }}" alt="{{ .Params.hero.heading }}">
+</section>
+
+<section id="services">
+  <h2>خدماتنا</h2>
+  {{ range .Params.services }}
+  <article>
+    <h3>{{ .title }}</h3>
+    <p>{{ .description }}</p>
+  </article>
+  {{ end }}
+</section>
+
+<section id="books" class="animate-fade-up">
+  <h2>كتبنا الجاهزة</h2>
+
+  {{ $tags := slice }}
+  {{ $books := where .Site.RegularPages "Section" "books" }}
+  {{ range $books }}
+    {{ if .Params.tag }}
+      {{ $tags = $tags | append (lower .Params.tag) }}
+    {{ end }}
+  {{ end }}
+
+  <div id="filter-container">
+    <label for="book-filter">فلتر الملامزم :</label>
+    <select id="book-filter" onchange="filterBooks(this.value)">
+      <option value="all">جميع الملازم</option>
+      {{ range (uniq $tags) }}
+        <option value="{{ . }}">{{ . | title }}</option>
+      {{ end }}
+    </select>
+  </div>
+
+  <div id="carousel-wrapper">
+    <button onclick="moveOuter(-1)">&#10094;</button>
+    <div id="books-viewport">
+      <div id="books-track">  
+        {{ range $books }}
+        <article class="book-card" data-tag="{{ lower .Params.tag }}">
+          <div>
+            <button onclick="moveInner(this, -1)">&#10094;</button>
+            <div>
+              <div class="inner-track" data-index="0">
+                {{ range .Params.images }}
+                <img src="{{ . }}" alt="{{ $.Title }}">
+                {{ end }}
+              </div>
+            </div>
+            <button onclick="moveInner(this, 1)">&#10095;</button>
+          </div>
+          <div>
+            <h3>{{ .Title }}</h3>
+            <span>{{ .Params.tag | title }}</span>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+    <button onclick="moveOuter(1)">&#10095;</button>
+  </div>
+</section>
+
+<section id="testimonials">
+  <h2>ماذا يقول عملاؤنا</h2>
+  {{ range .Params.testimonials }}
+  <article>
+    <p>{{ .opinion }}</p>
+    <h3>{{ .name }}</h3>
+  </article>
+  {{ end }}
+</section>
+
+<section id="contact">
+  <h2>تواصل معنا</h2>
+  <p>نحن هنا للإجابة على استفساراتك ومساعدتك في تطوير أعمالك.</p>
+  
+  <ul>
+    <li>
+      <strong>الهاتف:</strong>
+      <span dir="ltr">{{ .Params.contact.phone }}</span>
+    </li>
+    <li>
+      <strong>العنوان:</strong>
+      <span>{{ .Params.contact.address }}</span>
+    </li>
+  </ul>
+
+  <h3>منصات التواصل</h3>
+  <nav>
+    <a href="{{ .Params.contact.whatsapp }}">واتساب</a>
+    <a href="{{ .Params.contact.telegram }}">تيليكرام</a>
+    <a href="{{ .Params.contact.instagram }}">إنستغرام</a>
+    <a href="{{ .Params.contact.facebook }}">فيسبوك</a>
+  </nav>
+</section>
+{{ end }}
+{{ define "script" }}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks = document.querySelectorAll('header nav a');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (menuToggle) menuToggle.checked = false;
+      });
+    });
+  });
+
+  let currentOuterIndex = 0;
+
+  function moveOuter(direction) {
+    const track = document.getElementById('books-track');
+    const viewport = document.getElementById('books-viewport');
+    const cards = Array.from(track.children).filter(c => c.style.display !== 'none');
+    
+    if (cards.length === 0) return;
+
+    const isRTL = getComputedStyle(document.body).direction === 'rtl';
+    const cardWidth = cards[0].offsetWidth;
+    const gap = 32; 
+    const step = cardWidth + gap;
+    
+    const visibleCards = Math.floor(viewport.offsetWidth / step) || 1;
+    const maxIndex = Math.max(0, cards.length - visibleCards);
+
+    currentOuterIndex += direction;
+    if (currentOuterIndex < 0) currentOuterIndex = 0;
+    if (currentOuterIndex > maxIndex) currentOuterIndex = maxIndex;
+
+    const translateValue = currentOuterIndex * step;
+    track.style.transform = `translateX(${isRTL ? translateValue : -translateValue}px)`;
+  }
+
+  function moveInner(btn, direction) {
+    const wrapper = btn.parentElement;
+    const track = wrapper.querySelector('.inner-track');
+    const images = track.querySelectorAll('img');
+    const isRTL = getComputedStyle(document.body).direction === 'rtl';
+    
+    let currentIndex = parseInt(track.getAttribute('data-index') || '0');
+    currentIndex += direction;
+
+    if (currentIndex < 0) currentIndex = images.length - 1;
+    if (currentIndex >= images.length) currentIndex = 0;
+
+    track.setAttribute('data-index', currentIndex);
+    const imgWidth = wrapper.offsetWidth;
+    const translateValue = currentIndex * imgWidth;
+    
+    track.style.transform = `translateX(${isRTL ? translateValue : -translateValue}px)`;
+  }
+
+  function filterBooks(tag) {
+    const track = document.getElementById('books-track');
+    const books = document.querySelectorAll('.book-card');
+    
+    currentOuterIndex = 0;
+    track.style.transform = `translateX(0px)`;
+
+    books.forEach(book => {
+      book.style.display = (tag === 'all' || book.dataset.tag === tag) ? 'flex' : 'none';
+    });
+  }
+
+  window.addEventListener('resize', () => {
+    currentOuterIndex = 0;
+    document.getElementById('books-track').style.transform = `translateX(0px)`;
+    document.querySelectorAll('.inner-track').forEach(track => {
+      track.setAttribute('data-index', '0');
+      track.style.transform = `translateX(0px)`;
+    });
+  });
+</script>
+{{ end }}
