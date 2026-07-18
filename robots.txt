@@ -1,0 +1,14 @@
+# https://tamayuz.online
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap
+Sitemap: https://tamayuz.online/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
