@@ -1,8 +1,8 @@
 :root {
-  --primary-color: #6f36d0;
-  --primary-hover: #6D28D9;
+  --primary-color: #581c87; 
+  --primary-hover: #3b0764; 
   --text-dark: #111827;
-  --text-gray: #6B7280;
+  --text-gray: #4b5563; 
   --bg-light: #F5F3FF;
   --white: #ffffff;
   --transition: all 0.3s ease;
@@ -386,7 +386,7 @@ footer {
       padding: 3rem 2rem; gap: 2rem; transition: right 0.3s ease-in-out;
       box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.05); z-index: 105;
 
-      a { font-size: 1.2rem; width: 100%; text-align: center; padding: 12px 0; border-bottom: 1px solid var(--bg-light); }
+      a { font-size: 1.2rem; text-align: center; padding: 12px 0; border-bottom: 1px solid var(--bg-light); }
     }
 
     input[type="checkbox"]:checked {
