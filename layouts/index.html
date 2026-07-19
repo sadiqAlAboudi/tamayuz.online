@@ -3,7 +3,7 @@
   <h1>{{ .Params.hero.heading }}</h1>
   <p>{{ .Params.hero.description }}</p>
   <a href="#services">اكتشف خدماتنا</a>
-  <img src="{{ .Params.hero.image }}" alt="{{ .Params.hero.heading }}">
+  <img src="{{ .Params.hero.image }}" alt="{{ .Params.hero.heading }}" fetchpriority="high">
 </section>
 
 <section id="services">
