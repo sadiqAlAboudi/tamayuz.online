@@ -22,12 +22,12 @@
   {{ end }}
 </section>
 
-<section id="books">
+<section id="book">
   <h2 class="scroll-anim fade-up">ملازمنا الجاهزة</h2>
 
   {{ $tags := slice }}
-  {{ $books := where .Site.RegularPages "Section" "books" }}
-  {{ range $books }}
+  {{ $book := where .Site.RegularPages "Section" "book" }}
+  {{ range $book }}
   {{ if .Params.tag }}
   {{ $tags = $tags | append (lower .Params.tag) }}
   {{ end }}
@@ -35,7 +35,7 @@
 
   <div id="filter-container" class="scroll-anim fade-up delay-1">
     <label for="book-filter">فلتر الملازم :</label>
-    <select id="book-filter" onchange="filterBooks(this.value)">
+    <select id="book-filter" onchange="filterbook(this.value)">
       <option value="all">جميع الملازم</option>
       {{ range (uniq $tags) }}
       <option value="{{ . }}">{{ . | title }}</option>
@@ -45,9 +45,9 @@
 
   <div id="carousel-wrapper" class="scroll-anim fade-up delay-2">
     <button onclick="moveOuter(-1)">&#10094;</button>
-    <div id="books-viewport">
-      <div id="books-track">
-        {{ range $i, $book := $books }}
+    <div id="book-viewport">
+      <div id="book-track">
+        {{ range $i, $book := $book }}
         <article class="book-card scroll-anim fade-up delay-{{ add (mod $i 4) 1 }}" data-tag="{{ lower .Params.tag }}">
           <div>
             <button onclick="moveInner(this, -1)">&#10094;</button>
@@ -189,10 +189,10 @@
   // Execute on DOM Ready
   document.addEventListener('DOMContentLoaded', () => {
     // A. Shuffle Book Cards in the Outer Carousel
-    const booksTrack = document.getElementById('books-track');
-    if (booksTrack) {
-      const bookCards = Array.from(booksTrack.children);
-      shuffleArray(bookCards).forEach(card => booksTrack.appendChild(card));
+    const bookTrack = document.getElementById('book-track');
+    if (bookTrack) {
+      const bookCards = Array.from(bookTrack.children);
+      shuffleArray(bookCards).forEach(card => bookTrack.appendChild(card));
     }
 
     // B. Shuffle Images Inside Every Book Card
@@ -208,8 +208,8 @@
   let currentOuterIndex = 0;
 
   function moveOuter(direction) {
-    const track = document.getElementById('books-track');
-    const viewport = document.getElementById('books-viewport');
+    const track = document.getElementById('book-track');
+    const viewport = document.getElementById('book-viewport');
     const cards = Array.from(track.children).filter(c => c.style.display !== 'none');
 
     if (cards.length === 0) return;
@@ -249,21 +249,21 @@
     track.style.transform = `translateX(${isRTL ? translateValue : -translateValue}px)`;
   }
 
-  function filterBooks(tag) {
-    const track = document.getElementById('books-track');
-    const books = document.querySelectorAll('.book-card');
+  function filterbook(tag) {
+    const track = document.getElementById('book-track');
+    const book = document.querySelectorAll('.book-card');
 
     currentOuterIndex = 0;
     track.style.transform = `translateX(0px)`;
 
-    books.forEach(book => {
+    book.forEach(book => {
       book.style.display = (tag === 'all' || book.dataset.tag === tag) ? 'flex' : 'none';
     });
   }
 
   window.addEventListener('resize', () => {
     currentOuterIndex = 0;
-    document.getElementById('books-track').style.transform = `translateX(0px)`;
+    document.getElementById('book-track').style.transform = `translateX(0px)`;
     document.querySelectorAll('.inner-track').forEach(track => {
       track.setAttribute('data-index', '0');
       track.style.transform = `translateX(0px)`;

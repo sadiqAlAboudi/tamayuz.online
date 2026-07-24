@@ -237,7 +237,7 @@ header {
   }
 }
 
-#books {
+#book {
   background-color: var(--bg-light);
   display: flex;
   flex-direction: column;
@@ -298,12 +298,12 @@ header {
       }
     }
 
-    #books-viewport {
+    #book-viewport {
       overflow: hidden;
       width: 100%;
       min-width: 0;
 
-      #books-track {
+      #book-track {
         display: flex;
         gap: 2rem;
         transition: transform 0.4s ease-in-out;
@@ -759,18 +759,18 @@ footer {
     }
   }
 
-  #books #carousel-wrapper {
+  #book #carousel-wrapper {
     > button {
       display: none;
     }
 
-    #books-viewport {
+    #book-viewport {
       overflow-x: auto;
       padding-bottom: 1rem;
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x mandatory;
 
-      #books-track {
+      #book-track {
         transition: none;
         gap: 1rem;
 

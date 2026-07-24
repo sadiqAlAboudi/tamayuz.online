@@ -2,6 +2,8 @@ baseURL = 'https://tamayuz.online/'
 locale = 'ar'
 title = 'Tamayuz'
 
+disableKinds = ["section", "taxonomy", "term"]
+
 [module]
   [[module.mounts]]
     source = "assets"

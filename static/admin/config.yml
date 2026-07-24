@@ -65,9 +65,9 @@ collections:
               - { label: "فيسبوك", name: "facebook", widget: "string" }
               - { label: "واتساب", name: "whatsapp", widget: "string" }
 
-  - name: "books"
+  - name: "book"
     label: "الملازم"
-    folder: "content/books"
+    folder: "content/book"
     create: true
     slug: "{{uuid_shorter}}"
     fields:
