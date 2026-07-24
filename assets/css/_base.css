@@ -76,7 +76,6 @@ header {
     height: var(--header-height);
 
     a:first-child {
-      display: flex;
       align-items: center;
       flex-shrink: 0;
 
