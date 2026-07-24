@@ -1,23 +1,23 @@
 {{ define "main" }}
 <section id="hero">
-  <h1>{{ .Params.hero.heading }}</h1>
-  <p>{{ .Params.hero.description }}</p>
-  <a href="#services">اكتشف خدماتنا</a>
-  <img src="{{ .Params.hero.image }}" alt="{{ .Params.hero.heading }}" height="100" width="100" fetchpriority="high">
+  <h1 class="scroll-anim fade-up">{{ .Params.hero.heading }}</h1>
+  <p class="scroll-anim fade-up delay-1">{{ .Params.hero.description }}</p>
+  <a href="#services" class="scroll-anim fade-up delay-2">اكتشف خدماتنا</a>
+  <img src="{{ .Params.hero.image }}" alt="{{ .Params.hero.heading }}" height="100" width="100" loading="eager" fetchpriority="high" class="scroll-anim zoom-in delay-1">
 </section>
 
 <section id="services">
-  <h2>خدماتنا</h2>
-  {{ range .Params.services }}
-  <article>
+  <h2 class="scroll-anim fade-up">خدماتنا</h2>
+  {{ range $i, $service := .Params.services }}
+  <article class="scroll-anim fade-up delay-{{ add (mod $i 4) 1 }}">
     <h3>{{ .title }}</h3>
     <p>{{ .description }}</p>
   </article>
   {{ end }}
 </section>
 
-<section id="books" class="animate-fade-up">
-  <h2>كتبنا الجاهزة</h2>
+<section id="books">
+  <h2 class="scroll-anim fade-up">ملازمنا الجاهزة</h2>
 
   {{ $tags := slice }}
   {{ $books := where .Site.RegularPages "Section" "books" }}
@@ -27,7 +27,7 @@
     {{ end }}
   {{ end }}
 
-  <div id="filter-container">
+  <div id="filter-container" class="scroll-anim fade-up delay-1">
     <label for="book-filter">فلتر الملازم :</label>
     <select id="book-filter" onchange="filterBooks(this.value)">
       <option value="all">جميع الملازم</option>
@@ -37,12 +37,12 @@
     </select>
   </div>
 
-  <div id="carousel-wrapper">
+  <div id="carousel-wrapper" class="scroll-anim fade-up delay-2">
     <button onclick="moveOuter(-1)">&#10094;</button>
     <div id="books-viewport">
       <div id="books-track">  
-        {{ range $books }}
-        <article class="book-card" data-tag="{{ lower .Params.tag }}">
+        {{ range $i, $book := $books }}
+        <article class="book-card scroll-anim fade-up delay-{{ add (mod $i 4) 1 }}" data-tag="{{ lower .Params.tag }}">
           <div>
             <button onclick="moveInner(this, -1)">&#10094;</button>
             <div>
@@ -67,27 +67,41 @@
 </section>
 
 <section id="testimonials">
-  <h2>ماذا يقول عملاؤنا</h2>
-  {{ range .Params.testimonials }}
-  <article>
-    <p>{{ .opinion }}</p>
-    <h3>{{ .name }}</h3>
-  </article>
-  {{ end }}
+  <h2 class="scroll-anim fade-up">ماذا يقول عملاؤنا</h2>
+  
+  <div class="testimonials-slider scroll-anim fade-up delay-1">
+    <div class="testimonials-track">
+      {{/* First set of testimonials */}}
+      {{ range .Params.testimonials }}
+      <article class="testimonial-card">
+        <p>{{ .opinion }}</p>
+        <h3>{{ .name }}</h3>
+      </article>
+      {{ end }}
+
+      {{/* Duplicate set for seamless infinite loop */}}
+      {{ range .Params.testimonials }}
+      <article class="testimonial-card" aria-hidden="true">
+        <p>{{ .opinion }}</p>
+        <h3>{{ .name }}</h3>
+      </article>
+      {{ end }}
+    </div>
+  </div>
 </section>
 
 <section id="contact">
-  <h2>تواصل معنا</h2>
-  <p>نحن هنا للإجابة على استفساراتك ومساعدتك في تطوير أعمالك.</p>
+  <h2 class="scroll-anim fade-up">تواصل معنا</h2>
+  <p class="scroll-anim fade-up delay-1">نحن هنا للإجابة على استفساراتك ومساعدتك في تطوير أعمالك.</p>
   
   <address>
-    <a href="tel:{{ .Params.contact.phone }}" dir="ltr">
+    <a href="tel:{{ .Params.contact.phone }}" dir="ltr" class="scroll-anim zoom-in delay-1">
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
       <strong>الهاتف</strong>
       <span>{{ .Params.contact.phone }}</span>
     </a>
 
-    <article>
+    <article class="scroll-anim zoom-in delay-2">
       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
       <strong>العنوان</strong>
       <span>{{ .Params.contact.address }}</span>
@@ -95,24 +109,24 @@
   </address>
 
   <aside>
-    <h3>منصات التواصل</h3>
+    <h3 class="scroll-anim fade-up">منصات التواصل</h3>
     <menu>
-      <li>
+      <li class="scroll-anim zoom-in delay-1">
         <a href="{{ .Params.contact.whatsapp }}" aria-label="واتساب" target="_blank" rel="noopener noreferrer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
         </a>
       </li>
-      <li>
+      <li class="scroll-anim zoom-in delay-2">
         <a href="{{ .Params.contact.telegram }}" aria-label="تيليكرام" target="_blank" rel="noopener noreferrer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
         </a>
       </li>
-      <li>
+      <li class="scroll-anim zoom-in delay-3">
         <a href="{{ .Params.contact.instagram }}" aria-label="إنستغرام" target="_blank" rel="noopener noreferrer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
       </li>
-      <li>
+      <li class="scroll-anim zoom-in delay-4">
         <a href="{{ .Params.contact.facebook }}" aria-label="فيسبوك" target="_blank" rel="noopener noreferrer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
         </a>
@@ -196,6 +210,29 @@
     document.querySelectorAll('.inner-track').forEach(track => {
       track.setAttribute('data-index', '0');
       track.style.transform = `translateX(0px)`;
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.15 
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target); 
+        }
+      });
+    }, observerOptions);
+
+    const elementsToAnimate = document.querySelectorAll('.scroll-anim');
+    
+    elementsToAnimate.forEach(element => {
+      observer.observe(element);
     });
   });
 </script>
