@@ -3,7 +3,13 @@
   <h1 class="scroll-anim fade-up">{{ .Params.hero.heading }}</h1>
   <p class="scroll-anim fade-up delay-1">{{ .Params.hero.description }}</p>
   <a href="#services" class="scroll-anim fade-up delay-2">اكتشف خدماتنا</a>
-  <img src="{{ .Params.hero.image }}" alt="{{ .Params.hero.heading }}" height="100" width="100" loading="eager" fetchpriority="high" class="scroll-anim zoom-in delay-1">
+  {{ partial "image.html" (dict 
+    "src" "images/Hero.webp" 
+    "alt" "محطتك الأولى للملازم الجاهزة الاحترافية" 
+    "class" "scroll-anim zoom-in delay-1 in-view" 
+    "loading" "eager" 
+    "fetchpriority" "high"
+  ) }}
 </section>
 
 <section id="services">
@@ -48,7 +54,7 @@
             <div>
               <div class="inner-track" data-index="0">
                 {{ range .Params.images }}
-                <img src="{{ . }}" alt="{{ $.Title }}">
+                  {{ partial "image.html" (dict "src" . "alt" $.Title) }}
                 {{ end }}
               </div>
             </div>

@@ -1,0 +1,25 @@
+{{/* layouts/partials/image.html */}}
+{{ $src := .src }}
+{{ $alt := .alt | default "" }}
+{{ $class := .class | default "" }}
+{{ $loading := .loading | default "lazy" }}
+{{ $fetchpriority := .fetchpriority | default "auto" }}
+
+{{ $image := resources.Get $src }}
+
+{{ if $image }}
+  {{/* Resize and compress WebP to quality 75 */}}
+  {{ $processed := $image.Resize "800x webp q75" }}
+  <img 
+    src="{{ $processed.RelPermalink }}" 
+    width="{{ $processed.Width }}"
+    height="{{ $processed.Height }}"
+    alt="{{ $alt }}"
+    class="{{ $class }}"
+    loading="{{ $loading }}"
+    fetchpriority="{{ $fetchpriority }}"
+    />
+{{ else }}
+  {{/* Fallback if image isn't in assets/ */}}
+  <img src="{{ $src | relURL }}" alt="{{ $alt }}" class="{{ $class }}" loading="{{ $loading }}" fetchpriority="{{ $fetchpriority }}" />
+{{ end }}
