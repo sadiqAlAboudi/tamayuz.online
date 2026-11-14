@@ -1,22 +1,26 @@
-<header>
-  <div>
-    <a href="/">
-      <img src="logo.svg" alt="الشعار" width="125" height="100" loading="eager" fetchpriority="high" />
+{{ $settings := hugo.Data.settings }}
+<div class="topline" id="pageTop">
+  <div class="container topline-inner">
+    <span><i class="topline-spark">✦</i> <span>{{ $settings.topline_text | default "كل تفصيلة بملزمتك إلها قيمة" }}</span></span>
+    <a href="{{ $settings.whatsapp }}" target="_blank" rel="noopener"><span>{{ $settings.topline_link_text | default "خلّينا نتواصل" }}</span> <b>↗</b></a>
+  </div>
+</div>
+
+<header class="site-header" id="siteHeader">
+  <div class="container nav-wrap">
+    <a class="brand" href="#pageTop" aria-label="{{ $settings.site_name }} - الرئيسية">
+      <img class="brand-logo" src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}">
+      <span class="brand-copy"><strong>{{ $settings.site_name }}</strong><small>{{ $settings.brand_subtitle }}</small></span>
     </a>
-
-    <input type="checkbox" id="menu-toggle" />
-    <label for="menu-toggle">
-      <div>
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </label>
-
-    <nav>
-      <a href="#services">خدماتنا</a>
-      <a href="#book">ملازمنا</a>
-      <a href="#contact">تواصل معنا</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="mainNav" aria-label="القائمة الرئيسية">
+      <a class="nav-link active" href="#pageTop">الرئيسية</a>
+      <a class="nav-link" href="#services">خدماتنا</a>
+      <a class="nav-link" href="#showcase">من أعمالنا</a>
+      <a class="nav-link" href="#catalogue">الملازم</a>
+      <a class="nav-link" href="#reviews">آراء العملاء</a>
+      <a class="nav-link" href="#contact">تواصل معنا</a>
+      <a class="nav-cta" href="{{ $settings.whatsapp }}" target="_blank" rel="noopener">اطلب خدمتك <span>↗</span></a>
     </nav>
   </div>
 </header>

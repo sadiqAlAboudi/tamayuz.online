@@ -1,3 +1,60 @@
-<footer>
-    <p>جميع الحقوق محفوظة، منصة تمييز {{ time.Now.Year }} &copy;</p>
+{{ $settings := hugo.Data.settings }}
+<footer class="site-footer">
+  <div class="container footer-main">
+    <a class="footer-brand" href="#pageTop" aria-label="{{ $settings.site_name }} - إلى الأعلى">
+      <img src="{{ $settings.footer_logo | default "/assets/logo-white.webp" }}" alt="شعار {{ $settings.site_name }}">
+    </a>
+    <p>{{ $settings.footer_text | default "نرتّب المعرفة، ونقدّمها بصورة تليق بيها." }}</p>
+    <div class="footer-links">
+      <a href="#services">خدماتنا</a>
+      <a href="#showcase">من أعمالنا</a>
+      <a href="#catalogue">الملازم</a>
+      <a href="#reviews">آراء العملاء</a>
+      <a href="#contact">تواصل معنا</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>{{ $settings.copyright_text | default "© 2026 منصة التميز — جميع الحقوق محفوظة" }}</span>
+    <a href="#pageTop">العودة للأعلى ↑</a>
+  </div>
 </footer>
+
+{{/* Review Read More Modal */}}
+<div class="review-read-more-modal" id="reviewReadMoreModal" aria-hidden="true">
+  <div class="review-read-more-backdrop" data-close-review-modal></div>
+  <section class="review-read-more-dialog" role="dialog" aria-modal="true" aria-labelledby="reviewReadMoreName">
+    <button class="review-read-more-close" id="reviewReadMoreClose" type="button" aria-label="إغلاق نافذة الرأي">×</button>
+    <span class="review-read-more-kicker">من آراء زبائن منصة التميز</span>
+    <div class="review-read-more-stars" aria-hidden="true">★★★★★</div>
+    <h3 id="reviewReadMoreName">رأي أحد عملائنا</h3>
+    <small id="reviewReadMoreRole"></small>
+    <p id="reviewReadMoreBody"></p>
+  </section>
+</div>
+
+{{/* Product Details Modal */}}
+<div class="product-modal" id="productModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
+    <div class="modal-gallery">
+      <div class="modal-image-wrap">
+        <button class="gallery-arrow gallery-prev" id="galleryPrev" type="button" aria-label="الصورة السابقة">→</button>
+        <img id="modalImage" src="" alt="" loading="eager">
+        <button class="gallery-arrow gallery-next" id="galleryNext" type="button" aria-label="الصورة التالية">←</button>
+        <span class="gallery-count" id="galleryCount">01 / 01</span>
+      </div>
+      <div class="gallery-thumbnails" id="modalThumbs" aria-label="صور الملزمة"></div>
+    </div>
+    <div class="modal-info">
+      <span class="modal-tag" id="modalTag"></span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalDescription"></p>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-price" id="modalPrice" hidden></div>
+      <a class="btn btn-primary modal-preview" id="modalPreview" href="#" aria-label="اطلع على الملزمة كاملة">اطّلع على الملزمة كاملة <span>↗</span></a>
+      <a class="btn modal-order" id="modalOrder" href="{{ $settings.whatsapp }}" target="_blank" rel="noopener">استفسر عن الملزمة <span>↗</span></a>
+      <small class="modal-note">يمكنك التنقل بين صور الملزمة، ثم فتح نسخة PDF داخل الموقع.</small>
+    </div>
+  </div>
+</div>

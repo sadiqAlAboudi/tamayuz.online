@@ -1,6 +1,6 @@
 baseURL = 'https://tamayuz.online/'
 locale = 'ar'
-title = 'Tamayuz'
+title = 'منصة التميز'
 
 disableKinds = ["section", "taxonomy", "term"]
 
@@ -11,4 +11,4 @@ disableKinds = ["section", "taxonomy", "term"]
 
   [[module.mounts]]
     source = "static"
-    target = "assets"
+    target = "static"

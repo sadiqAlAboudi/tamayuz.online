@@ -1,38 +1,44 @@
+{{ $settings := hugo.Data.settings }}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <title>{{ .Site.Title }}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="{{ $settings.brand_color | default "#4b0872" }}">
+  <meta name="author" content="{{ $settings.site_name | default .Site.Title }}">
+  <meta name="description" content="{{ .Description | default .Site.Params.description }}" />
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="{{ .Site.Title }}">
-    <meta name="description" content="{{ .Description }}" />
-    <meta popover="og:image" content="/images/logo.svg" />
-    <meta property="og:title" content="{{ .Title }}" />
-    <meta property="og:description" content="{{ .Description }}" />
-    <meta property="og:url" content="{{ .Permalink }}" />
-    <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ .Title }}" />
+  <meta property="og:description" content="{{ .Description | default .Site.Params.description }}" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="{{ $settings.logo | default "/assets/logo-purple.webp" }}" />
 
-    {{ partial "schema.html" . }}
+  <title>{{ if .IsHome }}{{ $settings.site_name }} | ملازم جاهزة وتصميم وطباعة{{ else }}{{ .Title }} | {{ $settings.site_name }}{{ end }}</title>
 
-    <link rel="icon" type="image/svg" href="favicon.svg" />
-    <link rel="canonical" href="{{ .Permalink }}" />
+  <link rel="icon" type="image/png" href="/assets/logo-purple.png" />
+  <link rel="canonical" href="{{ .Permalink }}" />
 
-    <link rel="preload" href="fonts/cairo-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="fonts/cairo-semibold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="fonts/cairo-bold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    {{ $reset := resources.Get "css/_reset.css" }}
-    {{ $fonts := resources.Get "css/_fonts.css" }}
-    {{ $base := resources.Get "css/_base.css" }}
-    {{ $bundle := slice $reset $fonts $base | resources.Concat "css/bundle.css" | resources.Minify | resources.Fingerprint }}
-    <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}">
-    <link rel="preload" as="image" href="/images/Hero.webp" type="image/webp" fetchpriority="high">
+  {{ $css := resources.Get "css/styles.css" | resources.Minify | resources.Fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+  <style>
+    :root {
+      --purple: {{ $settings.brand_color | default "#64138b" }};
+    }
+  </style>
 </head>
 <body>
-    {{ partial "header.html" . }}
-    <main>{{ block "main" . }}{{ end }}</main>
-    {{ block "script" .}}{{ end }}
-    {{ partial "footer.html" . }}
+  {{ partial "header.html" . }}
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+
+  <script src="/js/script.js" defer></script>
 </body>
 </html>

@@ -7,73 +7,112 @@ backend:
   auth_methods:
     - token
 
-media_folder: "static/images"
-public_folder: "/images"
+local_backend: true
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
 
 media_libraries:
   all:
-    max_file_size: 5120000
+    max_file_size: 10485760
     slugify_filename: true
     transformations:
       raster_image:
         format: webp
         quality: 85
-      svg:
-        optimize: true
 
 site_url: https://tamayuz.online
 display_url: https://tamayuz.online
 
-
 collections:
+  - name: "settings"
+    label: "إعدادات الموقع"
+    files:
+      - label: "معلومات الموقع والتواصل"
+        name: "general"
+        file: "data/settings.yml"
+        fields:
+          - { label: "اسم المنصة", name: "site_name", widget: "string" }
+          - { label: "الوصف المختصر", name: "brand_subtitle", widget: "string" }
+          - { label: "لون الهوية", name: "brand_color", widget: "color" }
+          - { label: "الشعار الأساسي", name: "logo", widget: "image" }
+          - { label: "شعار التذييل", name: "footer_logo", widget: "image" }
+          - { label: "شريط الإعلان العلوي", name: "topline_text", widget: "string" }
+          - { label: "رابط الإعلان العلوي", name: "topline_link_text", widget: "string" }
+          - { label: "رقم الهاتف", name: "phone", widget: "string" }
+          - { label: "واتساب", name: "whatsapp", widget: "string" }
+          - { label: "تيليجرام", name: "telegram", widget: "string" }
+          - { label: "إنستغرام", name: "instagram", widget: "string" }
+          - { label: "فيسبوك", name: "facebook", widget: "string" }
+          - { label: "الموقع الجغرافي", name: "location", widget: "string" }
+          - { label: "نص التذييل", name: "footer_text", widget: "string" }
+          - { label: "حقوق النشر", name: "copyright_text", widget: "string" }
+
   - name: "home"
     label: "الصفحة الرئيسية"
     files:
-      - label: "تعديل محتوى الصفحة"
+      - label: "محتوى أقسام الموقع"
         name: "index"
         file: "content/_index.md"
         fields:
           - { label: "العنوان", name: "title", widget: "string" }
-          - { label: "الوصف", name: "description", widget: "string" }
+          - { label: "الوصف", name: "description", widget: "text" }
           - label: "قسم الهيرو"
             name: "hero"
             widget: "object"
             fields:
-              - { label: "العنوان الرئيسي", name: "heading", widget: "string" }
-              - { label: "الوصف", name: "description", widget: "text" }
-              - { label: "الصورة", name: "image", widget: "image" }
+              - { label: "الشارة", name: "badge", widget: "string" }
+              - { label: "العنوان الرئيسي", name: "title", widget: "string" }
+              - { label: "الكلمة المميزة", name: "highlight", widget: "string" }
+              - { label: "الوصف", name: "lead", widget: "text" }
+              - { label: "نص الزر الرئيسي", name: "primary_text", widget: "string" }
+              - { label: "نص الزر الثانوي", name: "secondary_text", widget: "string" }
+              - { label: "عنوان شارة الإثبات", name: "proof_title", widget: "string" }
+              - { label: "وصف شارة الإثبات", name: "proof_description", widget: "string" }
+              - { label: "وسوم الهيرو", name: "tags", widget: "list", field: { label: "وسم", name: "tag", widget: "string" } }
           - label: "الخدمات"
             name: "services"
             widget: "list"
             fields:
+              - { label: "الرقم", name: "eyebrow", widget: "string" }
               - { label: "العنوان", name: "title", widget: "string" }
               - { label: "الوصف", name: "description", widget: "text" }
-          - label: "آراء العملاء"
-            name: "testimonials"
-            widget: "list"
-            fields:
-              - { label: "الاسم", name: "name", widget: "string" }
-              - { label: "الرأي", name: "opinion", widget: "text" }
-          - label: "معلومات الاتصال"
-            name: "contact"
-            widget: "object"
-            fields:
-              - { label: "الهاتف", name: "phone", widget: "string" }
-              - { label: "العنوان", name: "address", widget: "string" }
-              - { label: "تيليجرام", name: "telegram", widget: "string" }
-              - { label: "انستغرام", name: "instagram", widget: "string" }
-              - { label: "فيسبوك", name: "facebook", widget: "string" }
-              - { label: "واتساب", name: "whatsapp", widget: "string" }
+              - { label: "الصورة", name: "image", widget: "image" }
+              - { label: "الرابط", name: "href", widget: "string" }
+              - { label: "نص الرابط", name: "link_text", widget: "string" }
 
   - name: "book"
     label: "الملازم"
     folder: "content/book"
     create: true
-    slug: "{{uuid_shorter}}"
+    slug: "{{slug}}"
     fields:
       - { label: "العنوان", name: "title", widget: "string" }
-      - { label: "التصنيف", name: "tag", widget: "string" }
-      - label: "الصور"
+      - { label: "الاسم اللطيف (Slug)", name: "slug", widget: "string" }
+      - { label: "المادة", name: "subject", widget: "select", options: ["العربي", "الإنكليزي", "الرياضيات", "الأحياء", "الفيزياء", "الكيمياء"] }
+      - { label: "الصف الدراسي", name: "grade", widget: "select", options: ["السادس الإعدادي", "الثالث متوسط"] }
+      - { label: "السعر بالدينار", name: "price", widget: "string" }
+      - { label: "مميزة", name: "featured", widget: "boolean", default: false }
+      - { label: "منشورة", name: "is_published", widget: "boolean", default: true }
+      - { label: "الترتيب", name: "sort_order", widget: "number", default: 0 }
+      - { label: "ملف الـ PDF", name: "pdf_path", widget: "file" }
+      - { label: "الاسم الأصلي لملف الـ PDF", name: "pdf_original_name", widget: "string", required: false }
+      - { label: "إتاحة المعاينة للعامة", name: "pdf_public", widget: "boolean", default: true }
+      - label: "معرض الصور (WebP)"
         name: "images"
         widget: "list"
         field: { label: "صورة", name: "image", widget: "image" }
+
+  - name: "testimonials"
+    label: "آراء العملاء"
+    folder: "content/testimonials"
+    create: true
+    slug: "review-{{id}}"
+    identifier_field: "name"
+    fields:
+      - { label: "المعرف", name: "id", widget: "number", value_type: "int" }
+      - { label: "الاسم", name: "name", widget: "string" }
+      - { label: "الصفة / التخصص", name: "role", widget: "string", default: "عميل منصة التميز" }
+      - { label: "نص التقييم", name: "body", widget: "text" }
+      - { label: "منشور", name: "is_published", widget: "boolean", default: true }
+      - { label: "الترتيب", name: "sort_order", widget: "number", default: 0 }

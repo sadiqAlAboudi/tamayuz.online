@@ -1,296 +1,362 @@
 {{ define "main" }}
-<section id="hero">
-  <h1 class="scroll-anim fade-up">{{ .Params.hero.heading }}</h1>
-  <p class="scroll-anim fade-up delay-1">{{ .Params.hero.description }}</p>
-  <a href="#services" class="scroll-anim fade-up delay-2">اكتشف خدماتنا</a>
-  {{ partial "image.html" (dict
-  "src" "images/Hero.webp"
-  "alt" "محطتك الأولى للملازم الجاهزة الاحترافية"
-  "class" "scroll-anim zoom-in delay-1 in-view"
-  "loading" "eager"
-  "fetchpriority" "high"
-  ) }}
-</section>
+{{ $settings := hugo.Data.settings }}
+{{ $hero := .Params.hero }}
 
-<section id="services">
-  <h2 class="scroll-anim fade-up">خدماتنا</h2>
-  {{ range $i, $service := .Params.services }}
-  <article class="scroll-anim fade-up delay-{{ add (mod $i 4) 1 }}">
-    <h3>{{ .title }}</h3>
-    <p>{{ .description }}</p>
-  </article>
-  {{ end }}
-</section>
+<!-- HERO SECTION -->
+<section class="hero-section" id="hero">
+  <div class="hero-grid-lines" aria-hidden="true"></div>
+  <div class="hero-orbit hero-orbit-one" aria-hidden="true"></div>
+  <div class="hero-orbit hero-orbit-two" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> <span>{{ $hero.badge }}</span></div>
+      <h1><span class="hero-title-line site-copy-main">{{ $hero.title }}</span><br><span>{{ $hero.highlight }}</span></h1>
+      <p class="hero-lead">{{ $hero.lead }}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#catalogue"><span>{{ $hero.primary_text | default "اكتشف الملازم" }}</span> <span>←</span></a>
+        <a class="btn btn-outline-light" href="#services"><span>{{ $hero.secondary_text | default "تعرّف على خدماتنا" }}</span></a>
+      </div>
+      <div class="hero-proof">
+        <span class="proof-icon">✦</span>
+        <div><strong><span>{{ $hero.proof_title }}</span></strong><small><span>{{ $hero.proof_description }}</span></small></div>
+      </div>
+      <div class="hero-bottom-tags">
+        {{ range $i, $tag := $hero.tags }}
+          {{ if gt $i 0 }}<i></i>{{ end }}
+          <span>{{ $tag }}</span>
+        {{ end }}
+      </div>
+    </div>
 
-<section id="book">
-  <h2 class="scroll-anim fade-up">ملازمنا الجاهزة</h2>
-
-  {{ $tags := slice }}
-  {{ $book := where .Site.RegularPages "Section" "book" }}
-  {{ range $book }}
-  {{ if .Params.tag }}
-  {{ $tags = $tags | append (lower .Params.tag) }}
-  {{ end }}
-  {{ end }}
-
-  <div id="filter-container" class="scroll-anim fade-up delay-1">
-    <label for="book-filter">فلتر الملازم :</label>
-    <select id="book-filter" onchange="filterbook(this.value)">
-      <option value="all">جميع الملازم</option>
-      {{ range (uniq $tags) }}
-      <option value="{{ . }}">{{ . | title }}</option>
-      {{ end }}
-    </select>
+    <div class="hero-visual" aria-label="نماذج من أعمال منصة التميز">
+      <div class="visual-aura"></div>
+      <div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div>
+      <figure class="hero-book hero-book-back hero-book-a">
+        <img src="{{ $hero.image_back1 | default "/images/1-7.webp" }}" alt="صفحات من ملازم التميز">
+      </figure>
+      <figure class="hero-book hero-book-back hero-book-b">
+        <img src="{{ $hero.image_back2 | default "/images/1-8.webp" }}" alt="صفحات من ملازم التميز">
+      </figure>
+      <figure class="hero-book hero-book-main">
+        <img src="{{ $hero.image_main | default "/images/00.webp" }}" alt="غلاف ملزمة التميز" fetchpriority="high" decoding="async">
+      </figure>
+      <div class="visual-badge">
+        <span>✦</span>
+        <div><b><span>{{ $hero.visual_title }}</span></b><small><span>{{ $hero.visual_description }}</span></small></div>
+      </div>
+      <div class="visual-caption"><span class="caption-dot"></span> <span>{{ $hero.visual_caption }}</span></div>
+    </div>
   </div>
+  <div class="hero-edge">
+    <div class="container">
+      <span>{{ $settings.site_name }}</span><i></i><span>نرتّب المعرفة ونبرزها بأفضل صورة</span><b>✦</b>
+    </div>
+  </div>
+</section>
 
-  <div id="carousel-wrapper" class="scroll-anim fade-up delay-2">
-    <button onclick="moveOuter(-1)">&#10094;</button>
-    <div id="book-viewport">
-      <div id="book-track">
-        {{ range $i, $book := $book }}
-        <article class="book-card scroll-anim fade-up delay-{{ add (mod $i 4) 1 }}" data-tag="{{ lower .Params.tag }}">
-          <div>
-            <button onclick="moveInner(this, -1)">&#10094;</button>
-            <div>
-              <div class="inner-track" data-index="0">
-                {{ range .Params.images }}
-                {{ partial "image.html" (dict "src" . "alt" $.Title) }}
-                {{ end }}
-              </div>
-            </div>
-            <button onclick="moveInner(this, 1)">&#10095;</button>
+<!-- SERVICES SECTION -->
+{{ with .Params.services_heading }}
+<section class="services-section section-pad" id="services">
+  <div class="container">
+    <div class="section-heading centered">
+      <span class="section-kicker">{{ .kicker }}</span>
+      <h2><span class="site-copy-main">{{ .title }}</span> <span>{{ .highlight }}</span></h2>
+      <p>{{ .description }}</p>
+    </div>
+    <div class="services-grid" id="landingServices">
+      {{ range $index, $service := $.Params.services }}
+      <article class="service-card {{ if eq $index 0 }}service-featured{{ end }}">
+        <div class="service-top">
+          <span class="service-number">{{ .eyebrow }}</span>
+          <span class="service-icon">✦</span>
+        </div>
+        {{ if .image }}
+        <div class="service-visual">
+          <img src="{{ .image }}" alt="{{ .title }}" loading="lazy" decoding="async">
+        </div>
+        {{ end }}
+        <h3>{{ .title }}</h3>
+        <p>{{ .description }}</p>
+        <a href="{{ .href | default "#contact" }}" class="text-link">
+          <span class="text-link-label">{{ .link_text | default "تعرّف على الخدمة" }}</span> <span aria-hidden="true">←</span>
+        </a>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- SHOWCASE SECTION -->
+{{ with .Params.showcase_heading }}
+<section class="showcase-section section-pad" id="showcase">
+  <div class="container showcase-layout">
+    <div class="showcase-copy">
+      <span class="section-kicker">{{ .kicker }}</span>
+      <h2><span class="site-copy-main">{{ .title }}</span><br><span>{{ .highlight }}</span></h2>
+      <p>{{ .description }}</p>
+      <div class="showcase-points">
+        {{ range .points }}
+        <div>
+          <span>{{ .num }}</span>
+          <b>{{ .title }}</b>
+          <small>{{ .desc }}</small>
+        </div>
+        {{ end }}
+      </div>
+      <a class="btn btn-primary" href="#catalogue"><span>{{ .button_text | default "تصفّح نماذج الملازم" }}</span> <span aria-hidden="true">←</span></a>
+    </div>
+    <div class="showcase-mosaic" id="landingShowcase">
+      {{ range $i, $item := $.Params.showcase }}
+      <figure class="mosaic-item {{ if eq $i 0 }}mosaic-large{{ else if eq $i 1 }}mosaic-top{{ else }}mosaic-bottom{{ end }}">
+        <img src="{{ .image | default "/assets/logo-purple.webp" }}" alt="{{ .title }}" loading="lazy" decoding="async">
+        <figcaption>{{ .title }}</figcaption>
+      </figure>
+      {{ end }}
+      <div class="mosaic-seal">
+        <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- CATALOGUE SECTION -->
+{{ $booklets := where site.RegularPages "Section" "book" }}
+<section class="catalogue-section section-pad" id="catalogue">
+  <div class="container">
+    <div class="catalogue-head">
+      <div class="section-heading">
+        <span class="section-kicker">اختَر اللي يناسبك</span>
+        <h2><span class="site-copy-main">تصفّح</span> <span>ملازمنا</span></h2>
+        <p>ابحث باسم الملزمة أو المادة، واستخدم الفلاتر حتى توصل للنموذج اللي تحتاجه.</p>
+      </div>
+      <div class="catalogue-seal">
+        <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}">
+        <span><span>إصدارات وأعمال متنوعة</span></span>
+      </div>
+    </div>
+
+    <div class="catalogue-tools">
+      <label class="search-box">
+        <span class="search-icon">⌕</span>
+        <input id="bookSearch" type="search" placeholder="ابحث باسم الملزمة أو المادة..." aria-label="ابحث عن ملزمة">
+      </label>
+      <label class="select-wrap">
+        <span>الصف الدراسي</span>
+        <select id="gradeFilter" aria-label="فلترة حسب الصف">
+          <option value="all">كل الصفوف</option>
+          <option value="السادس الإعدادي">السادس الإعدادي</option>
+          <option value="الثالث متوسط">الثالث متوسط</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="category-row" id="categoryFilters" aria-label="التصفية حسب المادة">
+      <button class="filter-chip selected" data-category="all" aria-pressed="true">الكل</button>
+      <button class="filter-chip" data-category="الأحياء" aria-pressed="false">الأحياء</button>
+      <button class="filter-chip" data-category="الإنكليزي" aria-pressed="false">الإنكليزي</button>
+      <button class="filter-chip" data-category="الرياضيات" aria-pressed="false">الرياضيات</button>
+      <button class="filter-chip" data-category="العربي" aria-pressed="false">العربي</button>
+      <button class="filter-chip" data-category="الفيزياء" aria-pressed="false">الفيزياء</button>
+      <button class="filter-chip" data-category="الكيمياء" aria-pressed="false">الكيمياء</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid" aria-live="polite">
+      {{ range $booklets }}
+      {{ $cover := index .Params.images 0 | default "" }}
+      <article class="product-card"
+               data-product-id="{{ .Params.id }}"
+               data-slug="{{ .Params.slug }}"
+               data-subject="{{ .Params.subject }}"
+               data-grade="{{ .Params.grade }}"
+               data-title="{{ .Title }}"
+               data-price="{{ .Params.price }}"
+               data-pdf="{{ .Params.pdf_path }}"
+               data-pdf-public="{{ .Params.pdf_public }}"
+               data-images='{{ .Params.images | jsonify }}'
+               data-description="{{ .Content | plainify | chomp }}">
+        <div class="product-image">
+          <img class="product-card-slide" src="{{ $cover }}" alt="معاينة {{ .Title }}" loading="lazy" decoding="async">
+          <span class="product-subject-badge">{{ .Params.subject }}</span>
+        </div>
+        <div class="product-info">
+          <h3>{{ .Title }}</h3>
+          {{ if .Params.price }}
+          <div class="product-price">
+            <span>السعر</span>
+            <strong class="price-val" data-raw-price="{{ .Params.price }}">{{ .Params.price }} د.ع</strong>
           </div>
-          <div>
-            <h3>{{ .Title }}</h3>
-            <span>{{ .Params.tag | title }}</span>
+          {{ end }}
+          <div class="product-bottom">
+            <button class="details-btn" type="button" data-product-id="{{ .Params.id }}">
+              تفاصيل الملزمة <span aria-hidden="true">←</span>
+            </button>
+          </div>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <span>⌕</span>
+      <h3>ما لقينا نتيجة مطابقة</h3>
+      <p>جرّب تغيّر كلمة البحث أو تختار تصنيف ثاني.</p>
+      <button class="reset-filters" id="resetFilters">إظهار كل الملازم</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS SECTION -->
+{{ with .Params.process_heading }}
+<section class="process-section section-pad" id="process">
+  <div class="container process-grid">
+    <div class="process-copy">
+      <span class="section-kicker light-kicker">{{ .kicker }}</span>
+      <h2><span class="site-copy-main">{{ .title }}</span><br><span>{{ .highlight }}</span></h2>
+      <p>{{ .description }}</p>
+      <a class="btn btn-light" href="#contact"><span>ابدأ بالتواصل</span> <span>←</span></a>
+    </div>
+    <div class="process-steps" id="landingProcess">
+      {{ range $.Params.process }}
+      <article class="step">
+        <span class="step-no">{{ .eyebrow }}</span>
+        <div>
+          <h3>{{ .title }}</h3>
+          <p>{{ .description }}</p>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    <div class="process-decoration" aria-hidden="true">✦</div>
+  </div>
+</section>
+{{ end }}
+
+<!-- TESTIMONIALS SECTION -->
+{{ $testimonials := where site.RegularPages "Section" "testimonials" }}
+<section class="reviews-section section-pad" id="reviews">
+  <div class="container">
+    <div class="reviews-head">
+      <div class="section-heading">
+        <span class="section-kicker">كلام نعتز بيه</span>
+        <h2><span class="site-copy-main">آراء عملائنا</span> <span>تتكلم عنّا</span></h2>
+        <p>آراء مدرسينا وزبائننا الكرام، نعتز بكل كلمة منها ونفتخر بثقتكم الدائمة.</p>
+      </div>
+      <div class="review-summary">
+        <strong>{{ len $testimonials }}</strong>
+        <span>آراء منشورة<br>على الموقع</span>
+      </div>
+    </div>
+
+    <div class="reviews-toolbar">
+      <span class="review-live"><i></i> <span>آراء عملائنا</span></span>
+      <div class="review-controls">
+        <button class="review-arrow" id="reviewPrev" type="button" aria-label="الرأي السابق">→</button>
+        <button class="review-arrow" id="reviewNext" type="button" aria-label="الرأي التالي">←</button>
+        <button class="review-expand" id="reviewExpand" type="button" aria-expanded="false">عرض كل الآراء <span>＋</span></button>
+      </div>
+    </div>
+
+    <div class="reviews-viewport" id="reviewsViewport">
+      <div class="reviews-track" id="reviewsTrack">
+        {{ range $i, $t := $testimonials }}
+        {{ $initial := substr .Params.name 0 1 }}
+        <article class="review-card {{ if modBool $i 2 }}review-card-tint{{ end }}"
+                 data-review-name="{{ .Params.name }}"
+                 data-review-role="{{ .Params.role }}"
+                 data-review-body="{{ .Params.body }}">
+          <div class="review-card-top"><span class="quote-mark">“</span><span class="review-stars">★★★★★</span></div>
+          <p>{{ .Params.body }}</p>
+          <button class="review-read-more" type="button" data-review-more aria-label="اقرأ رأي {{ .Params.name }} كاملاً">
+            اقرأ المزيد <span aria-hidden="true">←</span>
+          </button>
+          <div class="review-person">
+            <span class="avatar avatar-{{ index (slice "a" "b" "c" "d") (mod $i 4) }}">{{ $initial }}</span>
+            <div>
+              <strong>{{ .Params.name }}</strong>
+              {{ if and .Params.role (ne .Params.role "عميل منصة التميز") }}
+              <small>{{ .Params.role }}</small>
+              {{ end }}
+            </div>
+            <span class="review-check">✦</span>
           </div>
         </article>
         {{ end }}
       </div>
     </div>
-    <button onclick="moveOuter(1)">&#10095;</button>
-  </div>
-</section>
 
-<section id="testimonials">
-  <h2 class="scroll-anim fade-up">ماذا يقول عملاؤنا</h2>
-
-  <div class="testimonials-slider scroll-anim fade-up delay-1">
-    <div class="testimonials-track">
-      {{/* First set of testimonials */}}
-      {{ range .Params.testimonials }}
-      <article class="testimonial-card">
-        <p>{{ .opinion }}</p>
-        <h3>{{ .name }}</h3>
-      </article>
-      {{ end }}
-
-      {{/* Duplicate set for seamless infinite loop */}}
-      {{ range .Params.testimonials }}
-      <article class="testimonial-card" aria-hidden="true">
-        <p>{{ .opinion }}</p>
-        <h3>{{ .name }}</h3>
-      </article>
-      {{ end }}
+    <div class="review-bottom">
+      <div class="review-progress" id="reviewProgress"></div>
+      <small id="reviewPosition">01 / {{ len $testimonials }}</small>
     </div>
   </div>
 </section>
 
-<section id="contact">
-  <h2 class="scroll-anim fade-up">تواصل معنا</h2>
-  <p class="scroll-anim fade-up delay-1">نحن هنا للإجابة على استفساراتك ومساعدتك في تطوير أعمالك.</p>
+<!-- CONTACT SECTION -->
+{{ with .Params.contact_section }}
+<section class="contact-section" id="contact">
+  <div class="container contact-panel">
+    <div class="contact-copy">
+      <span class="section-kicker light-kicker">خلّينا نبدأ</span>
+      <h2><span class="site-copy-main">{{ .heading }}</span><br><span>{{ .subheading }}</span></h2>
+      <p>{{ .description }}</p>
+      <a class="btn btn-light" href="{{ $settings.whatsapp }}" target="_blank" rel="noopener">
+        <span>{{ .whatsapp_text | default "راسلنا على واتساب" }}</span> <span>↗</span>
+      </a>
+    </div>
 
-  <address>
-    <a href="tel:{{ .Params.contact.phone }}" dir="ltr" class="scroll-anim zoom-in delay-1">
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path
-          d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-        </path>
-      </svg>
-      <strong>الهاتف</strong>
-      <span>{{ .Params.contact.phone }}</span>
-    </a>
+    <div class="contact-details">
+      <div class="contact-detail">
+        <span class="detail-icon" aria-hidden="true">☎</span>
+        <div>
+          <small>اتصل أو راسلنا</small>
+          <a href="tel:{{ replaceRE "[^+0-9]" "" $settings.phone }}" dir="ltr">{{ $settings.phone }}</a>
+        </div>
+      </div>
+      <div class="contact-detail location-detail">
+        <span class="detail-icon location-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19 10.1C19 15.2 12 21 12 21S5 15.2 5 10.1a7 7 0 1 1 14 0Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.35" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        <div>
+          <small>موقعنا</small>
+          <strong>{{ $settings.location }}</strong>
+        </div>
+      </div>
+      <div class="contact-decoration" aria-hidden="true">✦</div>
+    </div>
 
-    <article class="scroll-anim zoom-in delay-2">
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-        <circle cx="12" cy="10" r="3"></circle>
-      </svg>
-      <strong>العنوان</strong>
-      <span>{{ .Params.contact.address }}</span>
-    </article>
-  </address>
-
-  <aside>
-    <h3 class="scroll-anim fade-up">منصات التواصل</h3>
-    <menu>
-      <li class="scroll-anim zoom-in delay-1">
-        <a href="{{ .Params.contact.whatsapp }}" aria-label="واتساب" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-            <path
-              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.99c-.002 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662a11.87 11.87 0 0 0 5.711 1.458h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" />
-          </svg>
+    <div class="contact-social">
+      <div class="contact-social-copy">
+        <h3>{{ .social_heading }}</h3>
+        <p>{{ .social_description }}</p>
+      </div>
+      <div class="social-links" aria-label="روابط منصات التواصل">
+        {{ if $settings.facebook }}
+        <a class="social-link" href="{{ $settings.facebook }}" target="_blank" rel="noopener noreferrer" aria-label="فيسبوك منصة التميز" title="فيسبوك">
+          <svg viewBox="0 0 320 512" aria-hidden="true"><path fill="currentColor" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06H297V6.26S260.43 0 225.36 0C152.77 0 105.09 44.38 105.09 124.72v70.62H24V288h81.09v224h99.36V288z"/></svg>
         </a>
-      </li>
-      <li class="scroll-anim zoom-in delay-2">
-        <a href="{{ .Params.contact.telegram }}" aria-label="تيليكرام" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
+        {{ end }}
+        {{ if $settings.instagram }}
+        <a class="social-link" href="{{ $settings.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="إنستغرام منصة التميز" title="إنستغرام">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.6" cy="6.7" r="1.2" fill="currentColor"/></svg>
         </a>
-      </li>
-      <li class="scroll-anim zoom-in delay-3">
-        <a href="{{ .Params.contact.instagram }}" aria-label="إنستغرام" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-          </svg>
+        {{ end }}
+        {{ if $settings.telegram }}
+        <a class="social-link" href="{{ $settings.telegram }}" target="_blank" rel="noopener noreferrer" aria-label="تلگرام منصة التميز" title="تلگرام">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m21 3-7.1 18-3.8-7.1L3 10.1 21 3Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="m10.1 13.9 5.1-5.1" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
         </a>
-      </li>
-      <li class="scroll-anim zoom-in delay-4">
-        <a href="{{ .Params.contact.facebook }}" aria-label="فيسبوك" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-          </svg>
+        {{ end }}
+        {{ if $settings.whatsapp }}
+        <a class="social-link" href="{{ $settings.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="واتساب منصة التميز" title="واتساب">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.2 11.7a8.2 8.2 0 0 1-12.1 7.2L3 20l1.2-4.8a8.2 8.2 0 1 1 16-3.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.2 8.1c.2-.5.5-.6.8-.6h.6c.2 0 .4.1.5.4l.8 1.8c.1.2.1.4-.1.6l-.6.7c-.2.2-.2.4 0 .7.5.9 1.2 1.6 2.1 2.1.3.2.5.2.7 0l.8-.9c.2-.2.4-.2.6-.1l1.7.8c.3.1.4.3.4.5 0 .5-.2 1-.6 1.3-.5.4-1.1.6-1.7.5-1.1-.1-2.5-.8-3.8-2-1.3-1.2-2.2-2.6-2.4-3.7-.1-.8.1-1.5.4-2.1Z" fill="currentColor"/></svg>
         </a>
-      </li>
-    </menu>
-  </aside>
+        {{ end }}
+      </div>
+      <small class="social-pending-note">حسابات منصة التميز الرسمية — أهلاً بكم في كل منصاتنا.</small>
+    </div>
+  </div>
 </section>
 {{ end }}
-{{ define "script" }}
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.getElementById('menu-toggle');
-    const navLinks = document.querySelectorAll('header nav a');
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (menuToggle) menuToggle.checked = false;
-      });
-    });
-  });
-  // Fisher-Yates Shuffle Algorithm
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-  // Execute on DOM Ready
-  document.addEventListener('DOMContentLoaded', () => {
-    // A. Shuffle Book Cards in the Outer Carousel
-    const bookTrack = document.getElementById('book-track');
-    if (bookTrack) {
-      const bookCards = Array.from(bookTrack.children);
-      shuffleArray(bookCards).forEach(card => bookTrack.appendChild(card));
-    }
-
-    // B. Shuffle Images Inside Every Book Card
-    const innerTracks = document.querySelectorAll('.inner-track');
-    innerTracks.forEach(track => {
-      const images = Array.from(track.children);
-      if (images.length > 1) {
-        shuffleArray(images).forEach(img => track.appendChild(img));
-      }
-    });
-  });
-
-  let currentOuterIndex = 0;
-
-  function moveOuter(direction) {
-    const track = document.getElementById('book-track');
-    const viewport = document.getElementById('book-viewport');
-    const cards = Array.from(track.children).filter(c => c.style.display !== 'none');
-
-    if (cards.length === 0) return;
-
-    const isRTL = getComputedStyle(document.body).direction === 'rtl';
-    const cardWidth = cards[0].offsetWidth;
-    const gap = 32;
-    const step = cardWidth + gap;
-
-    const visibleCards = Math.floor(viewport.offsetWidth / step) || 1;
-    const maxIndex = Math.max(0, cards.length - visibleCards);
-
-    currentOuterIndex += direction;
-    if (currentOuterIndex < 0) currentOuterIndex = 0;
-    if (currentOuterIndex > maxIndex) currentOuterIndex = maxIndex;
-
-    const translateValue = currentOuterIndex * step;
-    track.style.transform = `translateX(${isRTL ? translateValue : -translateValue}px)`;
-  }
-
-  function moveInner(btn, direction) {
-    const wrapper = btn.parentElement;
-    const track = wrapper.querySelector('.inner-track');
-    const images = track.children;
-    const isRTL = getComputedStyle(document.body).direction === 'rtl';
-
-    let currentIndex = parseInt(track.getAttribute('data-index') || '0');
-    currentIndex += direction;
-
-    if (currentIndex < 0) currentIndex = images.length - 1;
-    if (currentIndex >= images.length) currentIndex = 0;
-
-    track.setAttribute('data-index', currentIndex);
-    const imgWidth = wrapper.offsetWidth;
-    const translateValue = currentIndex * imgWidth;
-
-    track.style.transform = `translateX(${isRTL ? translateValue : -translateValue}px)`;
-  }
-
-  function filterbook(tag) {
-    const track = document.getElementById('book-track');
-    const book = document.querySelectorAll('.book-card');
-
-    currentOuterIndex = 0;
-    track.style.transform = `translateX(0px)`;
-
-    book.forEach(book => {
-      book.style.display = (tag === 'all' || book.dataset.tag === tag) ? 'flex' : 'none';
-    });
-  }
-
-  window.addEventListener('resize', () => {
-    currentOuterIndex = 0;
-    document.getElementById('book-track').style.transform = `translateX(0px)`;
-    document.querySelectorAll('.inner-track').forEach(track => {
-      track.setAttribute('data-index', '0');
-      track.style.transform = `translateX(0px)`;
-    });
-  });
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.15
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    const elementsToAnimate = document.querySelectorAll('.scroll-anim');
-
-    elementsToAnimate.forEach(element => {
-      observer.observe(element);
-    });
-  });
-</script>
 {{ end }}
