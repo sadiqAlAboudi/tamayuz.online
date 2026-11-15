@@ -16,23 +16,32 @@
   {{ end }}
 {{ end }}
 
-{{ $ogImage := "/assets/logo-purple.png" | absURL }}
+{{ $ogImage := "/assets/og-image.png" | absURL }}
+{{ $ogWidth := "1200" }}
+{{ $ogHeight := "630" }}
+{{ $ogType := "image/png" }}
 {{ if and (not .IsHome) .Params.images }}
   {{ if gt (len .Params.images) 0 }}
     {{ $ogImage = index .Params.images 0 }}
+    {{ $ogWidth = "800" }}
+    {{ $ogHeight = "1000" }}
+    {{ $ogType = "image/webp" }}
   {{ end }}
 {{ end }}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="{{ $settings.brand_color | default "#64138b" }}">
-  <meta name="author" content="{{ $settings.site_name | default .Site.Title }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="{{ $settings.brand_color | default "#64138b" }}" />
+  <meta name="author" content="{{ $settings.site_name | default .Site.Title }}" />
   <meta name="description" content="{{ $pageDesc }}" />
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
-  <!-- Open Graph / Facebook / WhatsApp -->
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ .Permalink }}" />
+
+  <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
   <meta property="og:site_name" content="{{ $settings.site_name }}" />
   <meta property="og:title" content="{{ $pageTitle }}" />
   <meta property="og:description" content="{{ $pageDesc }}" />
@@ -40,21 +49,30 @@
   <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}" />
   <meta property="og:locale" content="ar_IQ" />
   <meta property="og:image" content="{{ $ogImage }}" />
-  <meta property="og:image:alt" content="{{ .Title | default $settings.site_name }}" />
+  <meta property="og:image:secure_url" content="{{ $ogImage }}" />
+  <meta property="og:image:type" content="{{ $ogType }}" />
+  <meta property="og:image:width" content="{{ $ogWidth }}" />
+  <meta property="og:image:height" content="{{ $ogHeight }}" />
+  <meta property="og:image:alt" content="{{ if .IsHome }}{{ $pageTitle }}{{ else }}{{ .Title }}{{ end }}" />
 
   <!-- Twitter / X Cards -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="{{ $settings.twitter | default "@tamayuzz1" }}" />
+  <meta name="twitter:creator" content="{{ $settings.twitter | default "@tamayuzz1" }}" />
   <meta name="twitter:title" content="{{ $pageTitle }}" />
   <meta name="twitter:description" content="{{ $pageDesc }}" />
   <meta name="twitter:image" content="{{ $ogImage }}" />
+  <meta name="twitter:image:alt" content="{{ if .IsHome }}{{ $pageTitle }}{{ else }}{{ .Title }}{{ end }}" />
 
   <title>{{ $pageTitle }}</title>
 
-  <!-- Favicon & Touch Icons -->
+  <!-- Favicons, Touch Icons & Web App Manifest -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/png" href="/assets/logo-purple.png" />
-  <link rel="apple-touch-icon" href="/assets/logo-purple.png" />
-  <link rel="canonical" href="{{ .Permalink }}" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
