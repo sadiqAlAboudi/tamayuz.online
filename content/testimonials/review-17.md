@@ -7,5 +7,4 @@ body: |-
     وعاشت ايدكم
 is_published: true
 draft: false
-sort_order: 0
 ---

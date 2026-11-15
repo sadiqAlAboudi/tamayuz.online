@@ -51,9 +51,9 @@ collections:
     summary: "{{title}} — {{subject}} ({{price}} د.ع)"
     thumbnail: "images.*"
     sortable_fields:
-      - "sort_order"
       - "title"
       - "subject"
+      - "grade"
       - "price"
       - "is_published"
     view_filters:
@@ -78,7 +78,7 @@ collections:
       - { field: "subject", label: "المادة" }
       - { field: "grade", label: "الصف الدراسي" }
       - { field: "price", label: "السعر" }
-      - { field: "sort_order", label: "الترتيب" }
+      - { field: "featured", label: "مميزة" }
       - { field: "is_published", label: "منشورة" }
     fields:
       - { label: "العنوان", name: "title", widget: "string" }
@@ -101,7 +101,6 @@ collections:
       - { label: "السعر بالدينار", name: "price", widget: "string" }
       - { label: "مميزة", name: "featured", widget: "boolean", default: false }
       - { label: "منشورة", name: "is_published", widget: "boolean", default: true }
-      - { label: "الترتيب", name: "sort_order", widget: "number", default: 0 }
       - { label: "ملف الـ PDF", name: "pdf_path", widget: "file" }
       - { label: "الاسم الأصلي لملف الـ PDF", name: "pdf_original_name", widget: "string", required: false }
       - { label: "إتاحة المعاينة للعامة", name: "pdf_public", widget: "boolean", default: true }
@@ -125,7 +124,6 @@ collections:
     identifier_field: "name"
     summary: "{{name}} ({{role}})"
     sortable_fields:
-      - "sort_order"
       - "name"
       - "is_published"
     view_filters:
@@ -138,14 +136,12 @@ collections:
     table_columns:
       - { field: "name", label: "الاسم" }
       - { field: "role", label: "الصفة / التخصص" }
-      - { field: "sort_order", label: "الترتيب" }
       - { field: "is_published", label: "منشور" }
     fields:
       - { label: "الاسم", name: "name", widget: "string" }
       - { label: "الصفة / التخصص", name: "role", widget: "string", default: "عميل منصة التميز" }
       - { label: "نص التقييم", name: "body", widget: "text" }
       - { label: "منشور", name: "is_published", widget: "boolean", default: true }
-      - { label: "الترتيب", name: "sort_order", widget: "number", default: 0 }
 
   # ==========================================
   # فاصل تنظيمي (Divider)

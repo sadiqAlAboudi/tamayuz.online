@@ -7,5 +7,4 @@ body: |-
     بالنسبه للتعامل ماشاء الله مصداقيه وتعاون حلو ربي يحفظكم
 is_published: true
 draft: false
-sort_order: 0
 ---

@@ -4,5 +4,4 @@ role: "عميل منصة التميز"
 body: "عاشت الايادي شغل حلو ومصداقية في التعامل الله يرزقكم من واسع فضله"
 is_published: true
 draft: false
-sort_order: 0
 ---

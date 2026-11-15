@@ -6,5 +6,4 @@ body: |-
     ان شاء الله ع شهر العاشر اطلب الجزء الثاني بس اكمل تدقيقه اكول الكم
 is_published: true
 draft: false
-sort_order: 0
 ---

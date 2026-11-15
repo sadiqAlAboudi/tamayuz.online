@@ -7,5 +7,4 @@ body: |-
     اشكركم على حسن التعامل
 is_published: true
 draft: false
-sort_order: 0
 ---

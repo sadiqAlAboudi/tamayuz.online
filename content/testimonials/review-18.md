@@ -7,5 +7,4 @@ body: |-
     واذا احتاج مستقبلا شي اتواصل ويه حظرتك
 is_published: true
 draft: false
-sort_order: 0
 ---

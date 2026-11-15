@@ -132,7 +132,9 @@
 
 <!-- CATALOGUE SECTION -->
 {{ $booklets := where (where site.RegularPages "Section" "book") "Params.is_published" "!=" false }}
-{{ $booklets = sort $booklets "Params.sort_order" "asc" }}
+{{ $featured := sort (where $booklets "Params.featured" true) "Title" "asc" }}
+{{ $standard := sort (where $booklets "Params.featured" "!=" true) "Title" "asc" }}
+{{ $booklets = union $featured $standard }}
 <section class="catalogue-section section-pad" id="catalogue">
   <div class="container">
     <header class="catalogue-head">
@@ -243,7 +245,6 @@
 
 <!-- TESTIMONIALS SECTION -->
 {{ $testimonials := where (where site.RegularPages "Section" "testimonials") "Params.is_published" "!=" false }}
-{{ $testimonials = sort $testimonials "Params.sort_order" "asc" }}
 <section class="reviews-section section-pad" id="reviews">
   <div class="container">
     <header class="reviews-head">

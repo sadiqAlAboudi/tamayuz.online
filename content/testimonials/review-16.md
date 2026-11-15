@@ -4,5 +4,4 @@ role: "عميل منصة التميز"
 body: "ما شاء الله عليكم تعامل رائع ودقه بالعمل ربي يوفقكم"
 is_published: true
 draft: false
-sort_order: 0
 ---
