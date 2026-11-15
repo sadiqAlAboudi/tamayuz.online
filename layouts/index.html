@@ -122,7 +122,8 @@
 {{ end }}
 
 <!-- CATALOGUE SECTION -->
-{{ $booklets := where site.RegularPages "Section" "book" }}
+{{ $booklets := where (where site.RegularPages "Section" "book") "Params.is_published" "!=" false }}
+{{ $booklets = sort $booklets "Params.sort_order" "asc" }}
 <section class="catalogue-section section-pad" id="catalogue">
   <div class="container">
     <div class="catalogue-head">
@@ -164,8 +165,8 @@
       {{ range $booklets }}
       {{ $cover := index .Params.images 0 | default "" }}
       <article class="product-card"
-               data-product-id="{{ .Params.id }}"
-               data-slug="{{ .Params.slug }}"
+               data-product-id="{{ .File.BaseFileName }}"
+               data-slug="{{ .File.BaseFileName }}"
                data-subject="{{ .Params.subject }}"
                data-grade="{{ .Params.grade }}"
                data-title="{{ .Title }}"
@@ -187,7 +188,7 @@
           </div>
           {{ end }}
           <div class="product-bottom">
-            <button class="details-btn" type="button" data-product-id="{{ .Params.id }}">
+            <button class="details-btn" type="button" data-product-id="{{ .File.BaseFileName }}">
               تفاصيل الملزمة <span aria-hidden="true">←</span>
             </button>
           </div>
@@ -232,7 +233,8 @@
 {{ end }}
 
 <!-- TESTIMONIALS SECTION -->
-{{ $testimonials := where site.RegularPages "Section" "testimonials" }}
+{{ $testimonials := where (where site.RegularPages "Section" "testimonials") "Params.is_published" "!=" false }}
+{{ $testimonials = sort $testimonials "Params.sort_order" "asc" }}
 <section class="reviews-section section-pad" id="reviews">
   <div class="container">
     <div class="reviews-head">

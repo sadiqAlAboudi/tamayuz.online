@@ -100,10 +100,9 @@ collections:
     label: "الملازم"
     folder: "content/book"
     create: true
-    slug: "{{slug}}"
+    slug: "{{title}}"
     fields:
       - { label: "العنوان", name: "title", widget: "string" }
-      - { label: "الاسم اللطيف (Slug)", name: "slug", widget: "string" }
       - label: "المادة"
         name: "subject"
         widget: "relation"
@@ -136,10 +135,9 @@ collections:
     label: "آراء العملاء"
     folder: "content/testimonials"
     create: true
-    slug: "review-{{id}}"
+    slug: "review-{{slug}}"
     identifier_field: "name"
     fields:
-      - { label: "المعرف", name: "id", widget: "number", value_type: "int" }
       - { label: "الاسم", name: "name", widget: "string" }
       - { label: "الصفة / التخصص", name: "role", widget: "string", default: "عميل منصة التميز" }
       - { label: "نص التقييم", name: "body", widget: "text" }

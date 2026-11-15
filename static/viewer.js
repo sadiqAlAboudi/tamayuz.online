@@ -2,7 +2,6 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const params = new URLSearchParams(location.search);
-  const bookletId = params.get('id');
   const fileParam = params.get('file');
   const titleParam = params.get('title');
 
@@ -193,22 +192,6 @@
 
     let pdfUrl = fileParam;
     let bookletTitle = titleParam;
-
-    if (!pdfUrl && bookletId) {
-      try {
-        const res = await fetch('/booklets.json');
-        if (res.ok) {
-          const list = await res.json();
-          const found = list.find(b => String(b.id) === String(bookletId) || b.slug === bookletId);
-          if (found) {
-            pdfUrl = found.pdf_path;
-            bookletTitle = bookletTitle || found.title;
-          }
-        }
-      } catch (e) {
-        console.warn('Failed to load booklets.json', e);
-      }
-    }
 
     if (!pdfUrl) {
       return setError('رابط الملزمة غير صحيح أو لم يتم تحديد ملف PDF.');
