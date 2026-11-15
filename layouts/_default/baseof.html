@@ -23,7 +23,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  {{ $css := resources.Get "css/styles.css" | resources.Minify | resources.Fingerprint }}
+  {{ $cssFiles := slice
+    (resources.Get "css/base.css")
+    (resources.Get "css/header.css")
+    (resources.Get "css/hero.css")
+    (resources.Get "css/services.css")
+    (resources.Get "css/showcase.css")
+    (resources.Get "css/catalogue.css")
+    (resources.Get "css/process.css")
+    (resources.Get "css/reviews.css")
+    (resources.Get "css/contact.css")
+    (resources.Get "css/modals.css")
+    (resources.Get "css/single.css")
+  }}
+  {{ $css := $cssFiles | resources.Concat "css/styles.css" | resources.Minify | resources.Fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
   <style>

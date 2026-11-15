@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Single: Individual Booklet Detail Page (/book/*)
+   ========================================================================== */
+
+.single-book-container {
+  max-width: 960px;
+  margin: clamp(24px, 4vw, 40px) auto;
+  padding: clamp(20px, 3.5vw, 40px) 0;
+
+  & .single-book-back {
+    margin-bottom: 24px;
+
+    & a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--purple);
+      font-weight: 700;
+      font-size: 12px;
+      transition: color .2s;
+
+      &:hover {
+        color: var(--purple-2);
+      }
+    }
+  }
+
+  & .single-book-card {
+    background: #fff;
+    border: 1px solid #eee7f2;
+    border-radius: 20px;
+    padding: clamp(20px, 3.5vw, 36px);
+    display: flex;
+    gap: clamp(20px, 3.5vw, 36px);
+    flex-wrap: wrap;
+    box-shadow: 0 16px 40px rgba(49, 16, 68, .06);
+
+    & .single-book-cover {
+      flex: 1 1 320px;
+      max-width: 440px;
+      margin: 0;
+      background: #f3eff5;
+      padding: 12px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & img {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 12px 32px rgba(49, 16, 68, .18);
+        object-fit: contain;
+      }
+    }
+
+    & .single-book-details {
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      & .modal-tag {
+        align-self: flex-start;
+        margin-bottom: 12px;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 6px 12px;
+        background: #f3eaf8;
+        color: #68198b;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      & h1 {
+        font-size: clamp(22px, 2.5vw, 32px);
+        margin-bottom: 12px;
+        color: var(--purple-deep);
+        line-height: 1.4;
+      }
+
+      & .single-book-grade {
+        margin-bottom: 10px;
+        color: var(--muted);
+        font-size: 12px;
+
+        & strong {
+          color: var(--ink);
+        }
+      }
+
+      & .single-book-price {
+        font-size: clamp(18px, 2vw, 24px);
+        font-weight: 800;
+        color: var(--purple);
+        margin-bottom: 18px;
+      }
+
+      & .single-book-body {
+        margin-bottom: 24px;
+        line-height: 1.8;
+        color: #4b3e55;
+        font-size: 13px;
+      }
+
+      & .single-book-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+
+        & .btn {
+          min-height: 46px;
+          padding: 12px 20px;
+          font-size: 11px;
+        }
+      }
+    }
+  }
+}
