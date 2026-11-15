@@ -4,6 +4,15 @@ title = 'منصة التميز'
 
 disableKinds = ["section", "taxonomy", "term"]
 
+[outputFormats.LLMS]
+  baseName = "llms"
+  mediaType = "text/plain"
+  isPlainText = true
+  notAlternative = true
+
+[outputs]
+  home = ["HTML", "RSS", "LLMS"]
+
 [module]
   [[module.mounts]]
     source = "assets"

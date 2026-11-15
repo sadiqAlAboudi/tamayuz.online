@@ -1,0 +1,67 @@
+{{- $settings := hugo.Data.settings -}}
+# {{ site.Title }} — Tamayuz Online
+
+> {{ with .Params.description }}{{ . }}{{ else }}منصة تعليمية رائدة متخصصة في عالم الملازم الدراسية في العراق: توفير ملازم جاهزة ومراجعات منقحة، تصميم ملازم خاصة وهوية بصرية للأساتذة والمعاهد، وطباعة فاخرة.{{ end }}
+
+منصة التميز (Tamayuz Online) هي منصة عراقية متخصصة في الملازم والمطبوعات التعليمية الحديثة. تهدف المنصة إلى مساعدة الأساتذة والطلبة من خلال تقديم ملازم دراسية ذات تصميم بصري متطور، ألوان مريحة للعين، ومحتوى علمي منقح بعناية من قبل نُخبة من الأساتذة لضمان تجربة تعليمية متميزة.
+
+## الخدمات الرئيسية (Core Services)
+
+{{- range .Params.services }}
+- [{{ .title }}]({{ absURL .href }}): {{ .description }}
+{{- end }}
+
+## المراحل والمواد الدراسية (Grades & Subjects)
+
+### المراحل الدراسية المشمولة:
+{{- range $settings.grades }}
+- **{{ . }}**
+{{- end }}
+
+### المواد الدراسية:
+{{- range $settings.subjects }}
+- **مادة {{ . }}**
+{{- end }}
+
+## دليل الملازم المتوفرة (Booklets Catalogue)
+
+{{- $books := where site.RegularPages "Section" "book" }}
+{{- $publishedBooks := where $books "Draft" false }}
+{{- range ($publishedBooks.GroupByParam "grade") }}
+
+### مرحلة {{ .Key }}:
+{{- range .Pages.ByTitle }}
+- [{{ .Title }}]({{ .Permalink }}): مادة {{ .Params.subject }}{{ with .Summary }} — {{ . | plainify | chomp }}{{ end }}
+{{- end }}
+{{- end }}
+
+## ميزة المعاينة التفاعلية للملازم (Interactive PDF Viewer)
+توفر منصة التميز عارض PDF تفاعلي مخصص ومدمج على الرابط:
+- [عارض ملفات PDF]({{ "viewer.html" | absURL }}): يتيح للطلبة والأساتذة تصفح عينات ونماذج من صفحات الملازم مباشرة عبر المتصفح قبل تثبيت الحجز والطلب.
+
+## آلية العمل والطلب (Workflow & Ordering)
+{{- range .Params.process }}
+{{ .eyebrow }}. **{{ .title }}**: {{ .description }}
+{{- end }}
+
+## قنوات التواصل الرسمية (Official Contact & Social)
+- **الموقع الإلكتروني**: [{{ site.BaseURL }}]({{ site.BaseURL }})
+{{- with $settings.phone }}
+- **رقم الهاتف**: [{{ . }}](tel:{{ replaceRE "[^0-9+]" "" . }})
+{{- end }}
+{{- with $settings.whatsapp }}
+- **واتساب (WhatsApp)**: [{{ . }}]({{ . }})
+{{- end }}
+{{- with $settings.telegram }}
+- **تيليغرام (Telegram)**: [{{ . }}]({{ . }})
+{{- end }}
+{{- with $settings.instagram }}
+- **إنستغرام (Instagram)**: [{{ . }}]({{ . }})
+{{- end }}
+{{- with $settings.facebook }}
+- **فيسبوك (Facebook)**: [{{ . }}]({{ . }})
+{{- end }}
+{{- with $settings.location }}
+- **الموقع الجغرافي**: {{ . }} (توصيل لكافة المحافظات)
+{{- end }}
+- **خريطة الموقع (Sitemap)**: [{{ "sitemap.xml" | absURL }}]({{ "sitemap.xml" | absURL }})
