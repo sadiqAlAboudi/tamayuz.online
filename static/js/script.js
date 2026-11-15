@@ -185,26 +185,37 @@
   let reviewIndex = 0;
   let reviewTimer = null;
   let reviewsExpanded = false;
+  let cachedCardWidth = 0;
+  let cachedGap = 16;
+  let cachedViewportWidth = 0;
+  let cachedCardsCount = 0;
 
-  function reviewCards() { return Array.from($('reviewsTrack')?.querySelectorAll('.review-card') || []); }
-  function reviewVisible() {
-    const cards = reviewCards();
+  function measureReviewLayout() {
+    const track = $('reviewsTrack');
     const viewport = $('reviewsViewport');
-    if (!cards.length || !viewport) return 1;
-    const gap = parseFloat(getComputedStyle($('reviewsTrack')).columnGap || '16') || 16;
-    const cardWidth = cards[0].getBoundingClientRect().width;
-    if (!cardWidth) return 1;
-    return Math.max(1, Math.min(cards.length, Math.floor((viewport.clientWidth + gap + 1) / (cardWidth + gap))));
+    if (!track || !viewport) return;
+    const cards = track.children;
+    cachedCardsCount = cards.length;
+    cachedViewportWidth = viewport.clientWidth;
+    if (cards.length > 0) {
+      cachedCardWidth = cards[0].offsetWidth || 300;
+      const style = getComputedStyle(track);
+      cachedGap = parseFloat(style.columnGap || style.gap || '16') || 16;
+    }
   }
-  function reviewMax() { return Math.max(0, reviewCards().length - reviewVisible()); }
+
+  function reviewVisible() {
+    if (!cachedCardsCount || !cachedViewportWidth || !cachedCardWidth) return 1;
+    return Math.max(1, Math.min(cachedCardsCount, Math.floor((cachedViewportWidth + cachedGap + 1) / (cachedCardWidth + cachedGap))));
+  }
+  function reviewMax() { return Math.max(0, cachedCardsCount - reviewVisible()); }
 
   function updateReviews() {
-    const cards = reviewCards();
-    if (!cards.length) return;
+    if (!cachedCardsCount) return;
     reviewIndex = Math.max(0, Math.min(reviewIndex, reviewMax()));
-    const gap = parseFloat(getComputedStyle($('reviewsTrack')).columnGap || '16') || 16;
-    const step = cards[0].getBoundingClientRect().width + gap;
-    $('reviewsTrack').style.transform = `translateX(${reviewsExpanded ? 0 : reviewIndex * step}px)`;
+    const step = cachedCardWidth + cachedGap;
+    const track = $('reviewsTrack');
+    if (track) track.style.transform = `translateX(${reviewsExpanded ? 0 : reviewIndex * step}px)`;
     if ($('reviewPosition')) $('reviewPosition').textContent = `${String(reviewIndex + 1).padStart(2,'0')} / ${String(Math.max(1, reviewMax() + 1)).padStart(2,'0')}`;
 
     document.querySelectorAll('#reviewProgress span').forEach((el, i) => el.classList.toggle('active', i === reviewIndex));
@@ -260,9 +271,7 @@
       dragging = true;
       startX = e.clientX;
       deltaX = 0;
-      const cards = reviewCards();
-      const gap = parseFloat(getComputedStyle(track).columnGap || '16') || 16;
-      const step = cards[0] ? cards[0].getBoundingClientRect().width + gap : 0;
+      const step = cachedCardWidth + cachedGap;
       startOffset = reviewIndex * step;
       track.style.transition = 'none';
       viewport.classList.add('is-dragging');
@@ -358,6 +367,7 @@
   document.querySelector('.reviews-section')?.addEventListener('mouseenter', stopReviewTimer);
   document.querySelector('.reviews-section')?.addEventListener('mouseleave', startReviewTimer);
   window.addEventListener('resize', () => {
+    measureReviewLayout();
     reviewIndex = Math.min(reviewIndex, reviewMax());
     updateReviews();
     startReviewTimer();
@@ -389,10 +399,10 @@
   enableReviewDragging();
 
   // Review progress dots
-  const cards = reviewCards();
+  measureReviewLayout();
   const progress = $('reviewProgress');
-  if (progress && cards.length > 1) {
-    progress.innerHTML = Array.from({length: Math.max(1, cards.length - reviewVisible() + 1)}, (_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('');
+  if (progress && cachedCardsCount > 1) {
+    progress.innerHTML = Array.from({length: Math.max(1, cachedCardsCount - reviewVisible() + 1)}, (_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('');
   }
   updateReviews();
   startReviewTimer();

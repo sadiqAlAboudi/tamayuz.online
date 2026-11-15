@@ -9,7 +9,7 @@
 <header class="site-header" id="siteHeader">
   <div class="container">
     <a class="brand" href="#pageTop" aria-label="{{ $settings.site_name }} - الرئيسية">
-      <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}" width="84" height="78">
+      <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}" width="84" height="78" fetchpriority="high" decoding="async">
       <span>
         <strong>{{ $settings.site_name }}</strong>
         <small>{{ $settings.brand_subtitle }}</small>

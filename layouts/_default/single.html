@@ -8,7 +8,7 @@
   <article class="single-book-card">
     {{ if .Params.images }}
     <figure class="single-book-cover">
-      <img src="{{ index .Params.images 0 }}" alt="{{ .Title }}" loading="eager">
+      <img src="{{ index .Params.images 0 }}" alt="{{ .Title }}" width="400" height="500" fetchpriority="high" decoding="async">
     </figure>
     {{ end }}
 

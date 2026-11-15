@@ -36,13 +36,13 @@
       <div class="visual-ring ring-one"></div>
       <div class="visual-ring ring-two"></div>
       <figure class="hero-book hero-book-a">
-        <img src="{{ $hero.image_back1 | default "https://media.bookingmaster.app/tamayuz/images/1-7.webp" }}" alt="صفحات من ملازم التميز">
+        <img src="{{ $hero.image_back1 | default "https://media.bookingmaster.app/tamayuz/images/1-7.webp" }}" alt="صفحات من ملازم التميز" width="280" height="360" loading="lazy" decoding="async">
       </figure>
       <figure class="hero-book hero-book-b">
-        <img src="{{ $hero.image_back2 | default "https://media.bookingmaster.app/tamayuz/images/1-8.webp" }}" alt="صفحات من ملازم التميز">
+        <img src="{{ $hero.image_back2 | default "https://media.bookingmaster.app/tamayuz/images/1-8.webp" }}" alt="صفحات من ملازم التميز" width="280" height="360" loading="lazy" decoding="async">
       </figure>
       <figure class="hero-book hero-book-main">
-        <img src="{{ $hero.image_main | default "https://media.bookingmaster.app/tamayuz/images/00.webp" }}" alt="غلاف ملزمة التميز" fetchpriority="high" decoding="async">
+        <img src="{{ $hero.image_main | default "https://media.bookingmaster.app/tamayuz/images/00.webp" }}" alt="غلاف ملزمة التميز" width="340" height="440" fetchpriority="high" decoding="async">
       </figure>
       <aside class="visual-badge">
         <span>✦</span>
@@ -79,7 +79,7 @@
         </header>
         {{ if .image }}
         <figure class="service-visual">
-          <img src="{{ .image }}" alt="{{ .title }}" loading="lazy" decoding="async">
+          <img src="{{ .image }}" alt="{{ .title }}" width="400" height="500" loading="lazy" decoding="async">
         </figure>
         {{ end }}
         <h3>{{ .title }}</h3>
@@ -118,12 +118,12 @@
     <div class="showcase-mosaic" id="landingShowcase">
       {{ range $i, $item := $.Params.showcase }}
       <figure class="mosaic-item {{ if eq $i 0 }}mosaic-large{{ else if eq $i 1 }}mosaic-top{{ else }}mosaic-bottom{{ end }}">
-        <img src="{{ .image | default "/assets/logo-purple.webp" }}" alt="{{ .title }}" loading="lazy" decoding="async">
+        <img src="{{ .image | default "/assets/logo-purple.webp" }}" alt="{{ .title }}" width="400" height="500" loading="lazy" decoding="async">
         <figcaption>{{ .title }}</figcaption>
       </figure>
       {{ end }}
       <aside class="mosaic-seal">
-        <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}" loading="lazy">
+        <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}" width="64" height="64" loading="lazy" decoding="async">
       </aside>
     </div>
   </div>
@@ -144,7 +144,7 @@
         <p>ابحث باسم الملزمة أو المادة، واستخدم الفلاتر حتى توصل للنموذج اللي تحتاجه.</p>
       </div>
       <aside class="catalogue-seal">
-        <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}">
+        <img src="{{ $settings.logo | default "/assets/logo-purple.webp" }}" alt="شعار {{ $settings.site_name }}" width="48" height="48" loading="lazy" decoding="async">
         <span>إصدارات وأعمال متنوعة</span>
       </aside>
     </header>
@@ -187,7 +187,7 @@
                data-images='{{ .Params.images | jsonify }}'
                data-description="{{ .Content | plainify | chomp }}">
         <figure class="product-image">
-          <img class="product-card-slide" src="{{ $cover }}" alt="معاينة {{ .Title }}" loading="lazy" decoding="async">
+          <img class="product-card-slide" src="{{ $cover }}" alt="معاينة {{ .Title }}" width="268" height="335" loading="lazy" decoding="async">
           <figcaption class="product-subject-badge">{{ .Params.subject }}</figcaption>
         </figure>
         <div class="product-info">
