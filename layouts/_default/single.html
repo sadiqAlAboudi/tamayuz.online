@@ -1,47 +1,41 @@
 {{ define "main" }}
 {{ $settings := hugo.Data.settings }}
-<div class="container section-pad" style="max-width: 960px; margin: 40px auto;">
-  <a href="/#catalogue" class="text-link" style="display: inline-block; margin-bottom: 24px;">
-    <span>← العودة لكتالوج الملازم</span>
-  </a>
+<div class="container single-book-container">
+  <nav class="single-book-back" aria-label="مسار التنقل">
+    <a href="/#catalogue">← العودة لكتالوج الملازم</a>
+  </nav>
 
-  <article class="single-book-card" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 32px;">
-    <div style="display: flex; gap: 32px; flex-wrap: wrap;">
-      {{ if .Params.images }}
-      <div style="flex: 1 1 340px; max-width: 440px;">
-        <img src="{{ index .Params.images 0 }}" alt="{{ .Title }}" style="width: 100%; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.4);" loading="eager">
-      </div>
+  <article class="single-book-card">
+    {{ if .Params.images }}
+    <figure class="single-book-cover">
+      <img src="{{ index .Params.images 0 }}" alt="{{ .Title }}" loading="eager">
+    </figure>
+    {{ end }}
+
+    <div class="single-book-details">
+      <span class="modal-tag">{{ .Params.subject }}</span>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.grade }}
+      <p class="single-book-grade"><strong>الصف الدراسي:</strong> {{ . }}</p>
+      {{ end }}
+      {{ with .Params.price }}
+      <p class="single-book-price">{{ . }} دينار عراقي</p>
       {{ end }}
 
-      <div style="flex: 1 1 340px; display: flex; flex-direction: column; justify-content: center;">
-        <span class="modal-tag" style="align-self: flex-start; margin-bottom: 12px;">{{ .Params.subject }}</span>
-        <h1 style="font-size: 2rem; margin-bottom: 16px;">{{ .Title }}</h1>
-        {{ if .Params.grade }}
-        <div style="margin-bottom: 12px; color: rgba(255,255,255,0.7);">
-          <strong>الصف الدراسي:</strong> {{ .Params.grade }}
-        </div>
-        {{ end }}
-        {{ if .Params.price }}
-        <div style="font-size: 1.5rem; font-weight: 700; color: #ffd700; margin-bottom: 24px;">
-          {{ .Params.price }} دينار عراقي
-        </div>
-        {{ end }}
-
-        <div style="margin-bottom: 24px; line-height: 1.7; color: rgba(255,255,255,0.85);">
-          {{ .Content }}
-        </div>
-
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          {{ if and .Params.pdf_path .Params.pdf_public }}
-          <a class="btn btn-primary" href="/viewer.html?file={{ .Params.pdf_path | urlquery }}&title={{ .Title | urlquery }}">
-            اطّلع على الملزمة كاملة <span>↗</span>
-          </a>
-          {{ end }}
-          <a class="btn modal-order" href="{{ $settings.whatsapp }}?text={{ printf "السلام عليكم، أريد الاستفسار عن %s" .Title | urlquery }}" target="_blank" rel="noopener">
-            استفسر عن الملزمة <span>↗</span>
-          </a>
-        </div>
+      <div class="single-book-body">
+        {{ .Content }}
       </div>
+
+      <footer class="single-book-actions">
+        {{ if and .Params.pdf_path .Params.pdf_public }}
+        <a class="btn btn-primary modal-preview" href="/viewer.html?file={{ .Params.pdf_path | urlquery }}&title={{ .Title | urlquery }}">
+          اطّلع على الملزمة كاملة <span>↗</span>
+        </a>
+        {{ end }}
+        <a class="btn modal-order" href="{{ $settings.whatsapp }}?text={{ printf "السلام عليكم، أريد الاستفسار عن %s" .Title | urlquery }}" target="_blank" rel="noopener">
+          استفسر عن الملزمة <span>↗</span>
+        </a>
+      </footer>
     </div>
   </article>
 </div>

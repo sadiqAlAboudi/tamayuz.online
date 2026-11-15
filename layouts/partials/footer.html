@@ -5,16 +5,16 @@
       <img src="{{ $settings.footer_logo | default "/assets/logo-white.webp" }}" alt="شعار {{ $settings.site_name }}">
     </a>
     <p>{{ $settings.footer_text | default "نرتّب المعرفة، ونقدّمها بصورة تليق بيها." }}</p>
-    <div class="footer-links">
+    <nav class="footer-links" aria-label="روابط سريعة">
       <a href="#services">خدماتنا</a>
       <a href="#showcase">من أعمالنا</a>
       <a href="#catalogue">الملازم</a>
       <a href="#reviews">آراء العملاء</a>
       <a href="#contact">تواصل معنا</a>
-    </div>
+    </nav>
   </div>
   <div class="container footer-bottom">
-    <span>{{ $settings.copyright_text | default "© 2026 منصة التميز — جميع الحقوق محفوظة" }}</span>
+    <small>{{ $settings.copyright_text | default "© 2026 منصة التميز — جميع الحقوق محفوظة" }}</small>
     <a href="#pageTop">العودة للأعلى ↑</a>
   </div>
 </footer>
@@ -24,7 +24,7 @@
   <div class="review-read-more-backdrop" data-close-review-modal></div>
   <section class="review-read-more-dialog" role="dialog" aria-modal="true" aria-labelledby="reviewReadMoreName">
     <button class="review-read-more-close" id="reviewReadMoreClose" type="button" aria-label="إغلاق نافذة الرأي">×</button>
-    <span class="review-read-more-kicker">من آراء زبائن منصة التميز</span>
+    <small class="review-read-more-kicker">من آراء زبائن منصة التميز</small>
     <div class="review-read-more-stars" aria-hidden="true">★★★★★</div>
     <h3 id="reviewReadMoreName">رأي أحد عملائنا</h3>
     <small id="reviewReadMoreRole"></small>
@@ -35,16 +35,16 @@
 {{/* Product Details Modal */}}
 <div class="product-modal" id="productModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-backdrop" data-close-modal></div>
-  <div class="modal-card">
+  <article class="modal-card">
     <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
     <div class="modal-gallery">
-      <div class="modal-image-wrap">
+      <figure class="modal-image-wrap">
         <button class="gallery-arrow gallery-prev" id="galleryPrev" type="button" aria-label="الصورة السابقة">→</button>
         <img id="modalImage" src="" alt="" loading="eager">
         <button class="gallery-arrow gallery-next" id="galleryNext" type="button" aria-label="الصورة التالية">←</button>
         <span class="gallery-count" id="galleryCount">01 / 01</span>
-      </div>
-      <div class="gallery-thumbnails" id="modalThumbs" aria-label="صور الملزمة"></div>
+      </figure>
+      <nav class="gallery-thumbnails" id="modalThumbs" aria-label="صور الملزمة"></nav>
     </div>
     <div class="modal-info">
       <span class="modal-tag" id="modalTag"></span>
@@ -56,5 +56,5 @@
       <a class="btn modal-order" id="modalOrder" href="{{ $settings.whatsapp }}" target="_blank" rel="noopener">استفسر عن الملزمة <span>↗</span></a>
       <small class="modal-note">يمكنك التنقل بين صور الملزمة، ثم فتح نسخة PDF داخل الموقع.</small>
     </div>
-  </div>
+  </article>
 </div>
