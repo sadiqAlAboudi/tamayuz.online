@@ -1,22 +1,59 @@
 {{ $settings := hugo.Data.settings }}
+{{ $pageTitle := "" }}
+{{ if .IsHome }}
+  {{ $pageTitle = printf "%s | %s" $settings.site_name ($settings.brand_subtitle | default "ملازم جاهزة وتصميم وطباعة") }}
+{{ else }}
+  {{ $pageTitle = printf "%s | %s" .Title $settings.site_name }}
+{{ end }}
+
+{{ $pageDesc := "" }}
+{{ if .IsHome }}
+  {{ $pageDesc = .Description | default .Params.description | default $settings.brand_subtitle }}
+{{ else }}
+  {{ $pageDesc = .Description | default (.Summary | plainify | chomp) }}
+  {{ if not $pageDesc }}
+    {{ $pageDesc = printf "ملزمة %s للمرحلة الدراسية %s - مادة %s من منصة التميز في العراق." .Title (.Params.grade | default "") (.Params.subject | default "") }}
+  {{ end }}
+{{ end }}
+
+{{ $ogImage := "/assets/logo-purple.png" | absURL }}
+{{ if and (not .IsHome) .Params.images }}
+  {{ if gt (len .Params.images) 0 }}
+    {{ $ogImage = index .Params.images 0 }}
+  {{ end }}
+{{ end }}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="{{ $settings.brand_color | default "#4b0872" }}">
+  <meta name="theme-color" content="{{ $settings.brand_color | default "#64138b" }}">
   <meta name="author" content="{{ $settings.site_name | default .Site.Title }}">
-  <meta name="description" content="{{ .Description | default .Site.Params.description }}" />
+  <meta name="description" content="{{ $pageDesc }}" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-  <meta property="og:title" content="{{ .Title }}" />
-  <meta property="og:description" content="{{ .Description | default .Site.Params.description }}" />
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:site_name" content="{{ $settings.site_name }}" />
+  <meta property="og:title" content="{{ $pageTitle }}" />
+  <meta property="og:description" content="{{ $pageDesc }}" />
   <meta property="og:url" content="{{ .Permalink }}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="{{ $settings.logo | default "/assets/logo-purple.webp" }}" />
+  <meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}" />
+  <meta property="og:locale" content="ar_IQ" />
+  <meta property="og:image" content="{{ $ogImage }}" />
+  <meta property="og:image:alt" content="{{ .Title | default $settings.site_name }}" />
 
-  <title>{{ if .IsHome }}{{ $settings.site_name }} | ملازم جاهزة وتصميم وطباعة{{ else }}{{ .Title }} | {{ $settings.site_name }}{{ end }}</title>
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ $pageTitle }}" />
+  <meta name="twitter:description" content="{{ $pageDesc }}" />
+  <meta name="twitter:image" content="{{ $ogImage }}" />
 
+  <title>{{ $pageTitle }}</title>
+
+  <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" href="/assets/logo-purple.png" />
+  <link rel="apple-touch-icon" href="/assets/logo-purple.png" />
   <link rel="canonical" href="{{ .Permalink }}" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,6 +81,8 @@
       --purple: {{ $settings.brand_color | default "#64138b" }};
     }
   </style>
+
+  {{ partial "schema.html" . }}
 </head>
 <body>
   {{ partial "header.html" . }}

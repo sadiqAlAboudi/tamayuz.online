@@ -1,40 +1,91 @@
+{{ $settings := hugo.Data.settings }}
+{{ if .IsHome }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://tamayuz.online/#website",
-      "url": "https://tamayuz.online/",
-      "name": "منصة التميز",
-      "description": " منصة خاصة ببيع الملازم الجاهزة"
+      "@id": "{{ site.BaseURL }}#website",
+      "url": "{{ site.BaseURL }}",
+      "name": "{{ $settings.site_name | default site.Title }}",
+      "description": "{{ .Params.description | default $settings.brand_subtitle }}",
+      "inLanguage": "ar"
     },
     {
-      "@type": "Organization",
-      "@id": "https://tamayuz.online/",
-      "name": "منصة التميز",
-      "url": "https://tamayuz.online/",
-      "logo": "https://tamayuz.online/logo.svg",
+      "@type": "EducationalOrganization",
+      "@id": "{{ site.BaseURL }}#organization",
+      "name": "{{ $settings.site_name | default site.Title }}",
+      "url": "{{ site.BaseURL }}",
+      "logo": "{{ "/assets/logo-purple.png" | absURL }}",
+      "description": "{{ $settings.brand_subtitle }}",
+      "telephone": "{{ $settings.phone }}",
       "sameAs": [
-        "https://t.me/tamayuzz1",
-        "https://www.instagram.com/tamayuzz1/",
-        "https://www.facebook.com/Tamayuzz1",
-        "https://wa.me/9647881085046"
+        {{ with $settings.telegram }}"{{ . }}",{{ end }}
+        {{ with $settings.instagram }}"{{ . }}",{{ end }}
+        {{ with $settings.facebook }}"{{ . }}",{{ end }}
+        {{ with $settings.whatsapp }}"{{ . }}"{{ end }}
       ]
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://tamayuz.online/",
-      "url": "https://tamayuz.online/",
-      "name": "منصة التميز",
-      "description": " منصة خاصة ببيع الملازم الجاهزة",
-      "isPartOf": {
-        "@id": "https://tamayuz.online/"
-      },
-      "about": {
-        "@id": "https://tamayuz.online/"
-      }
     }
   ]
 }
 </script>
+{{ else }}
+{{ $desc := .Description | default (.Summary | plainify | chomp) }}
+{{ if not $desc }}
+  {{ $desc = printf "ملزمة %s للمرحلة الدراسية %s - مادة %s من منصة التميز في العراق." .Title (.Params.grade | default "") (.Params.subject | default "") }}
+{{ end }}
+{{ $img := "/assets/logo-purple.png" | absURL }}
+{{ with .Params.images }}
+  {{ if gt (len .) 0 }}
+    {{ $img = index . 0 }}
+  {{ end }}
+{{ end }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "@id": "{{ .Permalink }}#product",
+      "name": "{{ .Title }}",
+      "description": {{ $desc | jsonify }},
+      "image": "{{ $img }}",
+      "category": "{{ .Params.subject }}",
+      "url": "{{ .Permalink }}",
+      "offers": {
+        "@type": "Offer",
+        "price": "{{ .Params.price | default "0" }}",
+        "priceCurrency": "IQD",
+        "availability": "https://schema.org/InStock",
+        "url": "{{ .Permalink }}"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "{{ .Permalink }}#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "{{ site.BaseURL }}"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الملازم",
+          "item": "{{ site.BaseURL }}#catalogue"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "{{ .Title }}",
+          "item": "{{ .Permalink }}"
+        }
+      ]
+    }
+  ]
+}
+</script>
+{{ end }}
