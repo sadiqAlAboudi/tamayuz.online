@@ -54,6 +54,14 @@ collections:
           - { label: "الموقع الجغرافي", name: "location", widget: "string" }
           - { label: "نص التذييل", name: "footer_text", widget: "string" }
           - { label: "حقوق النشر", name: "copyright_text", widget: "string" }
+          - label: "المواد الدراسية"
+            name: "subjects"
+            widget: "list"
+            hint: "قائمة المواد الدراسية المتاحة في المنصة والفلاتر"
+          - label: "الصفوف الدراسية"
+            name: "grades"
+            widget: "list"
+            hint: "قائمة الصفوف والمراحل الدراسية المتاحة في المنصة والفلاتر"
 
   - name: "home"
     label: "الصفحة الرئيسية"
@@ -96,8 +104,22 @@ collections:
     fields:
       - { label: "العنوان", name: "title", widget: "string" }
       - { label: "الاسم اللطيف (Slug)", name: "slug", widget: "string" }
-      - { label: "المادة", name: "subject", widget: "select", options: ["العربي", "الإنكليزي", "الرياضيات", "الأحياء", "الفيزياء", "الكيمياء"] }
-      - { label: "الصف الدراسي", name: "grade", widget: "select", options: ["السادس الإعدادي", "الثالث متوسط"] }
+      - label: "المادة"
+        name: "subject"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["subjects.*"]
+        value_field: "subjects.*"
+        display_fields: ["subjects.*"]
+      - label: "الصف الدراسي"
+        name: "grade"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["grades.*"]
+        value_field: "grades.*"
+        display_fields: ["grades.*"]
       - { label: "السعر بالدينار", name: "price", widget: "string" }
       - { label: "مميزة", name: "featured", widget: "boolean", default: false }
       - { label: "منشورة", name: "is_published", widget: "boolean", default: true }

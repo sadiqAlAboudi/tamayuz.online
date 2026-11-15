@@ -32,13 +32,13 @@
       <div class="visual-aura"></div>
       <div class="visual-ring ring-one"></div><div class="visual-ring ring-two"></div>
       <figure class="hero-book hero-book-back hero-book-a">
-        <img src="{{ $hero.image_back1 | default "/images/1-7.webp" }}" alt="صفحات من ملازم التميز">
+        <img src="{{ $hero.image_back1 | default "https://media.bookingmaster.app/tamayuz/images/1-7.webp" }}" alt="صفحات من ملازم التميز">
       </figure>
       <figure class="hero-book hero-book-back hero-book-b">
-        <img src="{{ $hero.image_back2 | default "/images/1-8.webp" }}" alt="صفحات من ملازم التميز">
+        <img src="{{ $hero.image_back2 | default "https://media.bookingmaster.app/tamayuz/images/1-8.webp" }}" alt="صفحات من ملازم التميز">
       </figure>
       <figure class="hero-book hero-book-main">
-        <img src="{{ $hero.image_main | default "/images/00.webp" }}" alt="غلاف ملزمة التميز" fetchpriority="high" decoding="async">
+        <img src="{{ $hero.image_main | default "https://media.bookingmaster.app/tamayuz/images/00.webp" }}" alt="غلاف ملزمة التميز" fetchpriority="high" decoding="async">
       </figure>
       <div class="visual-badge">
         <span>✦</span>
@@ -146,20 +146,18 @@
         <span>الصف الدراسي</span>
         <select id="gradeFilter" aria-label="فلترة حسب الصف">
           <option value="all">كل الصفوف</option>
-          <option value="السادس الإعدادي">السادس الإعدادي</option>
-          <option value="الثالث متوسط">الثالث متوسط</option>
+          {{ range ($settings.grades | default (slice "السادس الإعدادي" "الثالث متوسط")) }}
+          <option value="{{ . }}">{{ . }}</option>
+          {{ end }}
         </select>
       </label>
     </div>
 
     <div class="category-row" id="categoryFilters" aria-label="التصفية حسب المادة">
       <button class="filter-chip selected" data-category="all" aria-pressed="true">الكل</button>
-      <button class="filter-chip" data-category="الأحياء" aria-pressed="false">الأحياء</button>
-      <button class="filter-chip" data-category="الإنكليزي" aria-pressed="false">الإنكليزي</button>
-      <button class="filter-chip" data-category="الرياضيات" aria-pressed="false">الرياضيات</button>
-      <button class="filter-chip" data-category="العربي" aria-pressed="false">العربي</button>
-      <button class="filter-chip" data-category="الفيزياء" aria-pressed="false">الفيزياء</button>
-      <button class="filter-chip" data-category="الكيمياء" aria-pressed="false">الكيمياء</button>
+      {{ range ($settings.subjects | default (slice "الأحياء" "الإنكليزي" "الرياضيات" "العربي" "الفيزياء" "الكيمياء")) }}
+      <button class="filter-chip" data-category="{{ . }}" aria-pressed="false">{{ . }}</button>
+      {{ end }}
     </div>
 
     <div class="products-grid" id="productsGrid" aria-live="polite">
