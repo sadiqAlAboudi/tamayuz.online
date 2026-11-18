@@ -1,0 +1,310 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+
+backend:
+  name: github
+  repo: sadiqAlAboudi/tamayuz.online
+  branch: main
+  auth_methods:
+    - token
+
+# Branding & URLs
+logo:
+  src: "/assets/logo-purple.png"
+  show_in_header: true
+
+site_url: https://tamayuz.online
+display_url: https://tamayuz.online
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+media_libraries:
+  aws_s3:
+    bucket: "media.bookingmaster.app"
+    region: "garage"
+    endpoint: "https://s3.bookingmaster.app"
+    public_url: "https://media.bookingmaster.app/"
+    access_key_id: "GK709686cf1810b306ae4cb7c3"
+    prefix: "tamayuz"
+  all:
+    max_file_size: 5242880
+    slugify_filename: true
+    transformations:
+      raster_image:
+        format: webp
+        quality: 85
+      svg:
+        optimize: true
+
+collections:
+  # ==========================================
+  # 1. الملازم الدراسية (Booklets Catalogue)
+  # ==========================================
+  - name: "book"
+    label: "الملازم الدراسية"
+    label_singular: "ملزمة"
+    icon: "menu_book"
+    description: "إدارة كتالوج الملازم، الأسعار، الصفوف، ملفات الـ PDF، ومعرض الصور"
+    folder: "content/book"
+    create: true
+    slug: "{{title}}"
+    summary: "{{title}} — {{subject}} ({{price}} د.ع)"
+    thumbnail: "images.*"
+    sortable_fields:
+      - "title"
+      - "subject"
+      - "grade"
+      - "price"
+      - "is_published"
+    view_filters:
+      - label: "المنشورة فقط"
+        field: "is_published"
+        pattern: true
+      - label: "المسودات (غير المنشورة)"
+        field: "is_published"
+        pattern: false
+      - label: "المميزة فقط"
+        field: "featured"
+        pattern: true
+    view_groups:
+      - label: "حسب المادة"
+        field: "subject"
+      - label: "حسب الصف"
+        field: "grade"
+      - label: "حسب حالة النشر"
+        field: "is_published"
+    table_columns:
+      - { field: "title", label: "اسم الملزمة" }
+      - { field: "subject", label: "المادة" }
+      - { field: "grade", label: "الصف الدراسي" }
+      - { field: "price", label: "السعر" }
+      - { field: "featured", label: "مميزة" }
+      - { field: "is_published", label: "منشورة" }
+    fields:
+      - { label: "العنوان", name: "title", widget: "string" }
+      - label: "المادة"
+        name: "subject"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["subjects.*"]
+        value_field: "subjects.*"
+        display_fields: ["subjects.*"]
+      - label: "الصف الدراسي"
+        name: "grade"
+        widget: "relation"
+        collection: "settings"
+        file: "general"
+        search_fields: ["grades.*"]
+        value_field: "grades.*"
+        display_fields: ["grades.*"]
+      - { label: "السعر بالدينار", name: "price", widget: "string" }
+      - { label: "مميزة", name: "featured", widget: "boolean", default: false }
+      - { label: "منشورة", name: "is_published", widget: "boolean", default: true }
+      - { label: "ملف الـ PDF", name: "pdf_path", widget: "file" }
+      - { label: "الاسم الأصلي لملف الـ PDF", name: "pdf_original_name", widget: "string", required: false }
+      - { label: "إتاحة المعاينة للعامة", name: "pdf_public", widget: "boolean", default: true }
+      - label: "معرض الصور (WebP)"
+        name: "images"
+        widget: "list"
+        field: { label: "صورة", name: "image", widget: "image" }
+      - { label: "وصف الملزمة / المحتوى", name: "body", widget: "markdown", required: false }
+
+  # ==========================================
+  # 2. آراء العملاء (Testimonials)
+  # ==========================================
+  - name: "testimonials"
+    label: "آراء العملاء"
+    label_singular: "رأي"
+    icon: "rate_review"
+    description: "إدارة تقييمات وآراء المدرسين والعملاء الظاهرة في شريط الآراء"
+    folder: "content/testimonials"
+    create: true
+    slug: "review-{{slug}}"
+    identifier_field: "name"
+    summary: "{{name}} ({{role}})"
+    sortable_fields:
+      - "name"
+      - "is_published"
+    view_filters:
+      - label: "الآراء المنشورة"
+        field: "is_published"
+        pattern: true
+      - label: "الآراء المؤجلة/المعطلة"
+        field: "is_published"
+        pattern: false
+    table_columns:
+      - { field: "name", label: "الاسم" }
+      - { field: "role", label: "الصفة / التخصص" }
+      - { field: "is_published", label: "منشور" }
+    fields:
+      - { label: "الاسم", name: "name", widget: "string" }
+      - { label: "الصفة / التخصص", name: "role", widget: "string", default: "عميل منصة التميز" }
+      - { label: "نص التقييم", name: "body", widget: "text" }
+      - { label: "منشور", name: "is_published", widget: "boolean", default: true }
+
+  # ==========================================
+  # فاصل تنظيمي (Divider)
+  # ==========================================
+  - name: "divider_settings"
+    divider: true
+
+  # ==========================================
+  # 3. الصفحة الرئيسية (Home Page Dashboard)
+  # ==========================================
+  - name: "home"
+    label: "الصفحة الرئيسية"
+    icon: "dashboard"
+    description: "إدارة نصوص وصور وأقسام الصفحة الرئيسية (الهيرو، الخدمات، من أعمالنا، خطوات العمل، التواصل)"
+    files:
+      - label: "محتوى أقسام الموقع"
+        name: "index"
+        file: "content/_index.md"
+        icon: "home"
+        fields:
+          - { label: "عنوان الصفحة", name: "title", widget: "string" }
+          - { label: "وصف SEO", name: "description", widget: "text" }
+
+          # Section 1: Hero
+          - label: "قسم الهيرو (الواجهة الرئيسية)"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "شارة البداية (Eyebrow)", name: "badge", widget: "string" }
+              - { label: "العنوان الرئيسي (السطر الأول)", name: "title", widget: "string" }
+              - { label: "الكلمة المميزة (السطر الثاني)", name: "highlight", widget: "string" }
+              - { label: "الوصف التعريفي (Lead)", name: "lead", widget: "text" }
+              - { label: "نص زر الملازم الرئيسي", name: "primary_text", widget: "string" }
+              - { label: "نص زر الخدمات الثانوي", name: "secondary_text", widget: "string" }
+              - { label: "عنوان شارة الإثبات", name: "proof_title", widget: "string" }
+              - { label: "وصف شارة الإثبات", name: "proof_description", widget: "string" }
+              - label: "وسوم الهيرو السفلية"
+                name: "tags"
+                widget: "list"
+                field: { label: "وسم", name: "tag", widget: "string" }
+              - { label: "عنوان نموذج العمل البصري", name: "visual_title", widget: "string" }
+              - { label: "وصف نموذج العمل البصري", name: "visual_description", widget: "string" }
+              - { label: "النص أسفل صورة الغلاف", name: "visual_caption", widget: "string" }
+              - { label: "صورة الغلاف الأساسية", name: "image_main", widget: "image" }
+              - { label: "صورة المعاينة الخلفية الأولى", name: "image_back1", widget: "image" }
+              - { label: "صورة المعاينة الخلفية الثانية", name: "image_back2", widget: "image" }
+
+          # Section 2: Services
+          - label: "عنوان قسم الخدمات"
+            name: "services_heading"
+            widget: "object"
+            fields:
+              - { label: "الشارة العلوية (Kicker)", name: "kicker", widget: "string" }
+              - { label: "العنوان", name: "title", widget: "string" }
+              - { label: "الكلمة المميزة", name: "highlight", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+
+          - label: "قائمة الخدمات"
+            name: "services"
+            widget: "list"
+            fields:
+              - { label: "الرقم والتعريف", name: "eyebrow", widget: "string" }
+              - { label: "اسم الخدمة", name: "title", widget: "string" }
+              - { label: "وصف الخدمة", name: "description", widget: "text" }
+              - { label: "صورة توضيحية للخدمة", name: "image", widget: "image" }
+              - { label: "الرابط", name: "href", widget: "string" }
+              - { label: "نص الزر", name: "link_text", widget: "string" }
+
+          # Section 3: Showcase
+          - label: "عنوان قسم من أعمالنا (Showcase)"
+            name: "showcase_heading"
+            widget: "object"
+            fields:
+              - { label: "الشارة العلوية (Kicker)", name: "kicker", widget: "string" }
+              - { label: "العنوان", name: "title", widget: "string" }
+              - { label: "الكلمة المميزة", name: "highlight", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+              - { label: "نص الزر", name: "button_text", widget: "string" }
+              - label: "النقاط والمميزات"
+                name: "points"
+                widget: "list"
+                fields:
+                  - { label: "الرقم", name: "num", widget: "string" }
+                  - { label: "العنوان", name: "title", widget: "string" }
+                  - { label: "الوصف المختصر", name: "desc", widget: "string" }
+
+          - label: "نماذج الأعمال المعروضة (Showcase Mosaic)"
+            name: "showcase"
+            widget: "list"
+            fields:
+              - { label: "المادة / التصنيف", name: "eyebrow", widget: "string" }
+              - { label: "العنوان", name: "title", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+              - { label: "صورة النموذج", name: "image", widget: "image" }
+              - { label: "الرابط", name: "href", widget: "string" }
+              - { label: "نص الزر", name: "link_text", widget: "string" }
+
+          # Section 4: Process
+          - label: "عنوان قسم خطوات العمل (Process)"
+            name: "process_heading"
+            widget: "object"
+            fields:
+              - { label: "الشارة العلوية (Kicker)", name: "kicker", widget: "string" }
+              - { label: "العنوان", name: "title", widget: "string" }
+              - { label: "الكلمة المميزة", name: "highlight", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+
+          - label: "خطوات العمل"
+            name: "process"
+            widget: "list"
+            fields:
+              - { label: "رقم الخطوة", name: "eyebrow", widget: "string" }
+              - { label: "عنوان الخطوة", name: "title", widget: "string" }
+              - { label: "شرح الخطوة", name: "description", widget: "text" }
+              - { label: "صورة الخطوة (اختياري)", name: "image", widget: "image", required: false }
+              - { label: "الرابط", name: "href", widget: "string" }
+              - { label: "نص الزر", name: "link_text", widget: "string" }
+
+          # Section 5: Contact Section
+          - label: "قسم التواصل والتذييل في الصفحة"
+            name: "contact_section"
+            widget: "object"
+            fields:
+              - { label: "العنوان الرئيسي", name: "heading", widget: "string" }
+              - { label: "العنوان الفرعي", name: "subheading", widget: "string" }
+              - { label: "الوصف", name: "description", widget: "text" }
+              - { label: "نص زر الواتساب", name: "whatsapp_text", widget: "string" }
+              - { label: "عنوان السوشيال ميديا", name: "social_heading", widget: "string" }
+              - { label: "وصف السوشيال ميديا", name: "social_description", widget: "text" }
+
+  # ==========================================
+  # 4. إعدادات المنصة (Site Settings)
+  # ==========================================
+  - name: "settings"
+    label: "إعدادات المنصة"
+    icon: "tune"
+    description: "إعدادات الهوية والشعار، أرقام التواصل وروابط السوشيال ميديا، وقوائم المواد والصفوف"
+    files:
+      - label: "معلومات الموقع والتواصل"
+        name: "general"
+        file: "data/settings.yml"
+        icon: "settings"
+        fields:
+          - { label: "اسم المنصة", name: "site_name", widget: "string" }
+          - { label: "الوصف المختصر", name: "brand_subtitle", widget: "string" }
+          - { label: "لون الهوية", name: "brand_color", widget: "color" }
+          - { label: "الشعار الأساسي", name: "logo", widget: "image" }
+          - { label: "شعار التذييل", name: "footer_logo", widget: "image" }
+          - { label: "شريط الإعلان العلوي", name: "topline_text", widget: "string" }
+          - { label: "رابط الإعلان العلوي", name: "topline_link_text", widget: "string" }
+          - { label: "رقم الهاتف", name: "phone", widget: "string" }
+          - { label: "واتساب", name: "whatsapp", widget: "string" }
+          - { label: "تيليجرام", name: "telegram", widget: "string" }
+          - { label: "إنستغرام", name: "instagram", widget: "string" }
+          - { label: "فيسبوك", name: "facebook", widget: "string" }
+          - { label: "الموقع الجغرافي", name: "location", widget: "string" }
+          - { label: "نص التذييل", name: "footer_text", widget: "string" }
+          - { label: "حقوق النشر", name: "copyright_text", widget: "string" }
+          - label: "المواد الدراسية"
+            name: "subjects"
+            widget: "list"
+            hint: "قائمة المواد الدراسية المتاحة في المنصة والفلاتر"
+          - label: "الصفوف الدراسية"
+            name: "grades"
+            widget: "list"
+            hint: "قائمة الصفوف والمراحل الدراسية المتاحة في المنصة والفلاتر"

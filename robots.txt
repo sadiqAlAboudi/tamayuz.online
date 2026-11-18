@@ -1,0 +1,12 @@
+# https://tamayuz.online
+# Robots.txt for Tamayuz Online
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+# Sitemap
+Sitemap: https://tamayuz.online/sitemap.xml
+
+# LLM Context
+# https://tamayuz.online/llms.txt
