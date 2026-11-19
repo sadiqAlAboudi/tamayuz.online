@@ -49,7 +49,7 @@ collections:
     create: true
     slug: "{{title}}"
     summary: "{{title}} — {{subject}} ({{price}} د.ع)"
-    thumbnail: "images.*"
+    thumbnail: "images"
     sortable_fields:
       - "title"
       - "subject"
@@ -106,8 +106,9 @@ collections:
       - { label: "إتاحة المعاينة للعامة", name: "pdf_public", widget: "boolean", default: true }
       - label: "معرض الصور (WebP)"
         name: "images"
-        widget: "list"
-        field: { label: "صورة", name: "image", widget: "image" }
+        widget: "image"
+        multiple: true
+        choose_url: true
       - { label: "وصف الملزمة / المحتوى", name: "body", widget: "markdown", required: false }
 
   # ==========================================
