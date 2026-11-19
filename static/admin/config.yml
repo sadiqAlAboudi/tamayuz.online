@@ -20,6 +20,7 @@ public_folder: "/uploads"
 
 media_libraries:
   aws_s3:
+    default: true
     bucket: "media.bookingmaster.app"
     region: "garage"
     endpoint: "https://s3.bookingmaster.app"
@@ -101,7 +102,7 @@ collections:
       - { label: "السعر بالدينار", name: "price", widget: "string" }
       - { label: "مميزة", name: "featured", widget: "boolean", default: false }
       - { label: "منشورة", name: "is_published", widget: "boolean", default: true }
-      - { label: "ملف الـ PDF", name: "pdf_path", widget: "file" }
+      - { label: "ملف الـ PDF", name: "pdf_path", widget: "file", choose_url: true }
       - { label: "الاسم الأصلي لملف الـ PDF", name: "pdf_original_name", widget: "string", required: false }
       - { label: "إتاحة المعاينة للعامة", name: "pdf_public", widget: "boolean", default: true }
       - label: "معرض الصور (WebP)"
