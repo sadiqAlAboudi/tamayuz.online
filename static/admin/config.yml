@@ -27,7 +27,7 @@ media_libraries:
     access_key_id: "GK709686cf1810b306ae4cb7c3"
     prefix: "tamayuz"
   all:
-    max_file_size: 5242880
+    max_file_size: 262144000 # 250 MB (يدعم رفع ملفات الملازم الكبيرة حتى 250 ميغابايت)
     slugify_filename: true
     transformations:
       raster_image:
