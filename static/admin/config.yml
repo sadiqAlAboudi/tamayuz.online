@@ -27,6 +27,7 @@ media_libraries:
     public_url: "https://media.bookingmaster.app/"
     access_key_id: "GK709686cf1810b306ae4cb7c3"
     prefix: "tamayuz"
+    label: الحفظ السحابي
   all:
     slugify_filename: true
     transformations:
@@ -101,14 +102,13 @@ collections:
       - { label: "السعر بالدينار", name: "price", widget: "string" }
       - { label: "مميزة", name: "featured", widget: "boolean", default: false }
       - { label: "منشورة", name: "is_published", widget: "boolean", default: true }
-      - { label: "ملف الـ PDF", name: "pdf_path", widget: "file", choose_url: true }
+      - { label: "ملف الـ PDF", name: "pdf_path", widget: "file" }
       - { label: "الاسم الأصلي لملف الـ PDF", name: "pdf_original_name", widget: "string", required: false }
       - { label: "إتاحة المعاينة للعامة", name: "pdf_public", widget: "boolean", default: true }
       - label: "معرض الصور (WebP)"
         name: "images"
         widget: "image"
         multiple: true
-        choose_url: true
       - { label: "وصف الملزمة / المحتوى", name: "body", widget: "markdown", required: false }
 
   # ==========================================
