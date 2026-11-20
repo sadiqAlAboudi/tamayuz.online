@@ -364,15 +364,6 @@
     reviewsExpanded ? stopReviewTimer() : startReviewTimer();
   });
 
-  document.querySelector('.reviews-section')?.addEventListener('mouseenter', stopReviewTimer);
-  document.querySelector('.reviews-section')?.addEventListener('mouseleave', startReviewTimer);
-  window.addEventListener('resize', () => {
-    measureReviewLayout();
-    reviewIndex = Math.min(reviewIndex, reviewMax());
-    updateReviews();
-    startReviewTimer();
-  });
-
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
@@ -395,15 +386,31 @@
   });
 
   // Init
-  initProductCardSlides();
-  enableReviewDragging();
-
-  // Review progress dots
-  measureReviewLayout();
-  const progress = $('reviewProgress');
-  if (progress && cachedCardsCount > 1) {
-    progress.innerHTML = Array.from({length: Math.max(1, cachedCardsCount - reviewVisible() + 1)}, (_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('');
+  if (document.querySelector('.product-card')) {
+    initProductCardSlides();
   }
-  updateReviews();
-  startReviewTimer();
+
+  // Reviews init & events
+  const reviewsSection = document.querySelector('.reviews-section');
+  if (reviewsSection && $('reviewsTrack')) {
+    reviewsSection.addEventListener('mouseenter', stopReviewTimer);
+    reviewsSection.addEventListener('mouseleave', startReviewTimer);
+
+    enableReviewDragging();
+    measureReviewLayout();
+
+    const progress = $('reviewProgress');
+    if (progress && cachedCardsCount > 1) {
+      progress.innerHTML = Array.from({length: Math.max(1, cachedCardsCount - reviewVisible() + 1)}, (_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('');
+    }
+    updateReviews();
+    startReviewTimer();
+
+    window.addEventListener('resize', () => {
+      measureReviewLayout();
+      reviewIndex = Math.min(reviewIndex, reviewMax());
+      updateReviews();
+      startReviewTimer();
+    });
+  }
 })();

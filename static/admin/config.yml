@@ -257,9 +257,6 @@ collections:
               - { label: "رقم الخطوة", name: "eyebrow", widget: "string" }
               - { label: "عنوان الخطوة", name: "title", widget: "string" }
               - { label: "شرح الخطوة", name: "description", widget: "text" }
-              - { label: "صورة الخطوة (اختياري)", name: "image", widget: "image", required: false }
-              - { label: "الرابط", name: "href", widget: "string" }
-              - { label: "نص الزر", name: "link_text", widget: "string" }
 
           # Section 5: Contact Section
           - label: "قسم التواصل والتذييل في الصفحة"
@@ -298,6 +295,7 @@ collections:
           - { label: "تيليجرام", name: "telegram", widget: "string" }
           - { label: "إنستغرام", name: "instagram", widget: "string" }
           - { label: "فيسبوك", name: "facebook", widget: "string" }
+          - { label: "تويتر / X", name: "twitter", widget: "string", required: false }
           - { label: "الموقع الجغرافي", name: "location", widget: "string" }
           - { label: "نص التذييل", name: "footer_text", widget: "string" }
           - { label: "حقوق النشر", name: "copyright_text", widget: "string" }

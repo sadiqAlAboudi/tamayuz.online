@@ -19,7 +19,7 @@
       <p class="single-book-grade"><strong>الصف الدراسي:</strong> {{ . }}</p>
       {{ end }}
       {{ with .Params.price }}
-      <p class="single-book-price">{{ . }} دينار عراقي</p>
+      <p class="single-book-price"><span class="price-val" data-raw-price="{{ . }}">{{ . }} دينار عراقي</span></p>
       {{ end }}
 
       <div class="single-book-body">
