@@ -13,7 +13,7 @@
       <h1>{{ $hero.title }}<br><span>{{ $hero.highlight }}</span></h1>
       <p class="hero-lead">{{ $hero.lead }}</p>
       <nav class="hero-actions" aria-label="روابط البداية">
-        <a class="btn btn-primary" href="#catalogue">{{ $hero.primary_text | default "اكتشف الملازم" }} <span>←</span></a>
+        <a class="btn btn-primary" href="#catalogue">{{ $hero.primary_text | default "تصفح الملازم" }} <span>←</span></a>
         <a class="btn btn-outline-light" href="#services">{{ $hero.secondary_text | default "تعرّف على خدماتنا" }}</a>
       </nav>
       <aside class="hero-proof">
@@ -31,7 +31,7 @@
       </ul>
     </div>
 
-    <figure class="hero-visual" aria-label="نماذج من أعمال منصة التميز">
+    <div class="hero-visual" aria-label="نماذج من أعمال منصة التميز">
       <div class="visual-aura"></div>
       <div class="visual-ring ring-one"></div>
       <div class="visual-ring ring-two"></div>
@@ -52,7 +52,7 @@
         </div>
       </aside>
       <figcaption class="visual-caption">{{ $hero.visual_caption }}</figcaption>
-    </figure>
+    </div>
   </div>
   <footer class="hero-edge">
     <div class="container">
@@ -184,8 +184,8 @@
                data-price="{{ .Params.price }}"
                data-pdf="{{ .Params.pdf_path }}"
                data-pdf-public="{{ .Params.pdf_public }}"
-               data-images='{{ .Params.images | jsonify }}'
-               data-description="{{ .Content | plainify | chomp }}">
+               data-images='{{ .Params.images | jsonify }}'>
+        <div class="product-card-desc" hidden>{{ .Content }}</div>
         <figure class="product-image">
           <img class="product-card-slide" src="{{ $cover }}" alt="معاينة {{ .Title }}" width="268" height="335" loading="lazy" decoding="async">
           <figcaption class="product-subject-badge">{{ .Params.subject }}</figcaption>

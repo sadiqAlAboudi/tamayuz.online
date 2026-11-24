@@ -134,7 +134,8 @@
     const price = card.dataset.price || '';
     const pdfPath = card.dataset.pdf || '';
     const pdfPublic = card.dataset.pdfPublic === 'true';
-    const description = card.dataset.description || '';
+    const descEl = card.querySelector('.product-card-desc');
+    let description = descEl ? descEl.innerHTML.trim() : (card.dataset.description || '');
 
     selectedProduct = { title, images, pdfPath };
     galleryIndex = 0;
@@ -142,7 +143,7 @@
 
     $('modalTag').textContent = subject;
     $('modalTitle').textContent = title;
-    $('modalDescription').textContent = description || 'تعرّف على تفاصيل الملزمة واستعرض نماذج من صفحاتها.';
+    $('modalDescription').innerHTML = description || '<p>تعرّف على تفاصيل الملزمة واستعرض نماذج من صفحاتها.</p>';
 
     const meta = grade ? [`الصف الدراسي: ${grade}`] : [];
     $('modalMeta').innerHTML = meta.map(x => `<span>${esc(x)}</span>`).join('');

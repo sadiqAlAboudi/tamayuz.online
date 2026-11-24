@@ -102,6 +102,37 @@
         line-height: 1.8;
         color: #4b3e55;
         font-size: 13px;
+
+        & p {
+          margin: 0 0 12px;
+        }
+
+        & ul, & ol {
+          margin: 0 0 16px;
+          padding: 0;
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        & li {
+          position: relative;
+          padding-right: 20px;
+          line-height: 1.8;
+
+          &::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 8px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--purple);
+            box-shadow: 0 0 0 3px rgba(100, 19, 139, 0.15);
+          }
+        }
       }
 
       & .single-book-actions {
