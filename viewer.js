@@ -200,6 +200,12 @@
     $('bookletTitle').textContent = bookletTitle || 'معاينة الملزمة';
     watermarkText = `منصة التميز — ${bookletTitle || 'نسخة معاينة'} — tamayuz.online`;
 
+    const inquiryBtn = $('viewerInquiry');
+    if (inquiryBtn) {
+      const text = encodeURIComponent(bookletTitle ? `السلام عليكم، أريد الاستفسار عن ${bookletTitle}` : 'السلام عليكم، أريد الاستفسار عن الملزمة');
+      inquiryBtn.href = `https://wa.me/9647881085046?text=${text}`;
+    }
+
     try {
       const task = pdfjsLib.getDocument({
         url: pdfUrl,
