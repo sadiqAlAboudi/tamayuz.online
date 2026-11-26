@@ -60,21 +60,27 @@
 
       & .modal-image-wrap {
         position: relative;
-        min-height: clamp(230px, 35vw, 390px);
-        height: clamp(260px, 40vw, 430px);
-        padding: 8px;
+        width: 100%;
+        min-height: clamp(280px, 35vw, 360px);
+        height: clamp(340px, 46vw, 520px);
+        padding: 10px;
         margin: 0;
         border-radius: 13px;
         overflow: hidden;
         background: linear-gradient(145deg, #fff, #eae3ef);
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         & img {
-          width: 100%;
-          height: 100%;
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
           object-fit: contain;
+          object-position: center;
           border-radius: 9px;
+          display: block;
         }
 
         & .gallery-arrow {
@@ -133,7 +139,7 @@
 
         & .gallery-thumb {
           width: clamp(52px, 6vw, 62px);
-          height: clamp(60px, 7vw, 72px);
+          height: clamp(62px, 7.5vw, 75px);
           flex: 0 0 clamp(52px, 6vw, 62px);
           padding: 3px;
           border: 2px solid transparent;
@@ -142,6 +148,9 @@
           overflow: hidden;
           cursor: pointer;
           opacity: .78;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
           &.active {
             border-color: #64138b;
@@ -150,9 +159,11 @@
           }
 
           & img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             border-radius: 5px;
           }
         }
@@ -314,7 +325,16 @@
   .product-modal .modal-card {
     grid-template-columns: 1fr;
     max-height: 94vh;
-    overflow: auto;
+    overflow-y: auto;
+
+    & .modal-gallery {
+      padding: 8px;
+
+      & .modal-image-wrap {
+        height: clamp(280px, 65vw, 420px);
+        min-height: 240px;
+      }
+    }
   }
 }
 
