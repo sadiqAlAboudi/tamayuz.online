@@ -145,7 +145,8 @@
     $('modalTitle').textContent = title;
     $('modalDescription').innerHTML = description || '<p>تعرّف على تفاصيل الملزمة واستعرض نماذج من صفحاتها.</p>';
 
-    const meta = grade ? [`الصف الدراسي: ${grade}`] : [];
+    const gradeLabel = grade ? (grade.startsWith('الصف') ? grade : `الصف ${grade}`) : '';
+    const meta = gradeLabel ? [gradeLabel] : [];
     $('modalMeta').innerHTML = meta.map(x => `<span>${esc(x)}</span>`).join('');
 
     const formattedPrice = formatIraqiPrice(price);

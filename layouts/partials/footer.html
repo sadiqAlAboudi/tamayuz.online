@@ -36,21 +36,27 @@
 <div class="product-modal" id="productModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-backdrop" data-close-modal></div>
   <article class="modal-card">
-    <button class="modal-close" id="modalClose" aria-label="إغلاق">×</button>
+    <button class="modal-close" id="modalClose" type="button" aria-label="إغلاق">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
     <div class="modal-gallery">
       <figure class="modal-image-wrap">
-        <button class="gallery-arrow gallery-prev" id="galleryPrev" type="button" aria-label="الصورة السابقة">→</button>
         <img id="modalImage" src="" alt="" loading="eager" width="600" height="750">
-        <button class="gallery-arrow gallery-next" id="galleryNext" type="button" aria-label="الصورة التالية">←</button>
         <span class="gallery-count" id="galleryCount">01 / 01</span>
       </figure>
+      <div class="gallery-controls">
+        <button class="gallery-arrow gallery-prev" id="galleryPrev" type="button" aria-label="الصورة السابقة">→</button>
+        <div class="gallery-badges">
+          <span class="modal-tag" id="modalTag"></span>
+          <div class="modal-meta" id="modalMeta"></div>
+        </div>
+        <button class="gallery-arrow gallery-next" id="galleryNext" type="button" aria-label="الصورة التالية">←</button>
+      </div>
       <nav class="gallery-thumbnails" id="modalThumbs" aria-label="صور الملزمة"></nav>
     </div>
     <div class="modal-info">
-      <span class="modal-tag" id="modalTag"></span>
       <h2 id="modalTitle"></h2>
       <div class="modal-description" id="modalDescription"></div>
-      <div class="modal-meta" id="modalMeta"></div>
       <div class="modal-price" id="modalPrice" hidden></div>
       <a class="btn btn-primary modal-preview" id="modalPreview" href="#" aria-label="اطلع على الملزمة كاملة">اطّلع على الملزمة كاملة <span>↗</span></a>
       <a class="btn modal-order" id="modalOrder" href="{{ $settings.whatsapp }}" target="_blank" rel="noopener">استفسر عن الملزمة <span>↗</span></a>
