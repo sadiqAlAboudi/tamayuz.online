@@ -52,14 +52,7 @@
       "description": {{ $desc | jsonify }},
       "image": "{{ $img }}",
       "category": "{{ .Params.subject }}",
-      "url": "{{ .Permalink }}",
-      "offers": {
-        "@type": "Offer",
-        "price": "{{ .Params.price | default "0" }}",
-        "priceCurrency": "IQD",
-        "availability": "https://schema.org/InStock",
-        "url": "{{ .Permalink }}"
-      }
+      "url": "{{ .Permalink }}"
     },
     {
       "@type": "BreadcrumbList",

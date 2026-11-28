@@ -10,21 +10,6 @@
   let galleryIndex = 0;
   const productSlideTimers = new Map();
 
-  function formatIraqiPrice(value) {
-    const digits = String(value || '').replace(/[^0-9]/g, '');
-    if (!digits) return '';
-    const amount = Number(digits);
-    if (!Number.isFinite(amount) || amount <= 0) return '';
-    return `${new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(amount)} دينار عراقي`;
-  }
-
-  // Format existing card prices on page load
-  document.querySelectorAll('.price-val').forEach(el => {
-    const raw = el.dataset.rawPrice;
-    const formatted = formatIraqiPrice(raw);
-    if (formatted) el.textContent = formatted;
-  });
-
   // Card Image Cycling
   function initProductCardSlides() {
     for (const timer of productSlideTimers.values()) clearInterval(timer);
@@ -131,7 +116,6 @@
     const title = card.dataset.title || '';
     const subject = card.dataset.subject || '';
     const grade = card.dataset.grade || '';
-    const price = card.dataset.price || '';
     const pdfPath = card.dataset.pdf || '';
     const pdfPublic = card.dataset.pdfPublic === 'true';
     const descEl = card.querySelector('.product-card-desc');
@@ -148,10 +132,6 @@
     const gradeLabel = grade ? (grade.startsWith('الصف') ? grade : `الصف ${grade}`) : '';
     const meta = gradeLabel ? [gradeLabel] : [];
     $('modalMeta').innerHTML = meta.map(x => `<span>${esc(x)}</span>`).join('');
-
-    const formattedPrice = formatIraqiPrice(price);
-    $('modalPrice').hidden = !formattedPrice;
-    $('modalPrice').innerHTML = formattedPrice ? `<span>السعر</span><strong>${esc(formattedPrice)}</strong>` : '';
 
     const text = encodeURIComponent(`السلام عليكم، أريد الاستفسار عن ${title}`);
     const whatsappBase = $('modalOrder').href.split('?')[0];

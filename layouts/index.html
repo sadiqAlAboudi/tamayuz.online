@@ -181,7 +181,6 @@
                data-subject="{{ .Params.subject }}"
                data-grade="{{ .Params.grade }}"
                data-title="{{ .Title }}"
-               data-price="{{ .Params.price }}"
                data-pdf="{{ .Params.pdf_path }}"
                data-pdf-public="{{ .Params.pdf_public }}"
                data-images='{{ .Params.images | jsonify }}'>
@@ -192,12 +191,6 @@
         </figure>
         <div class="product-info">
           <h3>{{ .Title }}</h3>
-          {{ if .Params.price }}
-          <div class="product-price">
-            <span>السعر</span>
-            <strong class="price-val" data-raw-price="{{ .Params.price }}">{{ .Params.price }} د.ع</strong>
-          </div>
-          {{ end }}
           <footer class="product-bottom">
             <button class="details-btn" type="button" data-product-id="{{ .File.BaseFileName }}">
               تفاصيل الملزمة <span aria-hidden="true">←</span>
